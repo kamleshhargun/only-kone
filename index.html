@@ -1,240 +1,231 @@
-<!-- index.html -->
-
 <!DOCTYPE html>
 <html>
 <head>
-  <base target="_top">
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<title>GST Invoice</title>
 
-  <style>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-      font-family:'Poppins',sans-serif;
-    }
+<style>
 
-    body{
-      background:#f3f4f6;
-      padding:20px;
-    }
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
 
-    .container{
-      max-width:1250px;
-      margin:auto;
-    }
+body{
+  background:#f3f4f6;
+  padding:20px;
+}
 
-    .topbar{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      flex-wrap:wrap;
-      gap:10px;
-      margin-bottom:20px;
-    }
+.container{
+  max-width:1250px;
+  margin:auto;
+}
 
-    .btn-group{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-    }
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-bottom:20px;
+}
 
-    button{
-      border:none;
-      padding:12px 20px;
-      border-radius:12px;
-      cursor:pointer;
-      color:#fff;
-      font-weight:600;
-      font-size:14px;
-    }
+.left-top,
+.right-top{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  align-items:center;
+}
 
-    .dark{
-      background:#111827;
-    }
+button{
+  border:none;
+  padding:12px 20px;
+  border-radius:12px;
+  cursor:pointer;
+  color:#fff;
+  font-size:14px;
+  font-weight:600;
+}
 
-    .green{
-      background:#16a34a;
-    }
+.dark{
+  background:#111827;
+}
 
-    .blue{
-      background:#2563eb;
-    }
+.green{
+  background:#16a34a;
+}
 
-    .invoice{
-      background:#fff;
-      padding:30px;
-      border-radius:20px;
-      box-shadow:0 10px 30px rgba(0,0,0,0.08);
-    }
+.blue{
+  background:#2563eb;
+}
 
-    .title{
-      font-size:32px;
-      font-weight:700;
-      margin-bottom:30px;
-    }
+.invoice{
+  background:#fff;
+  padding:30px;
+  border-radius:20px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.08);
+}
 
-    .grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-      gap:18px;
-      margin-bottom:30px;
-    }
+.title{
+  font-size:32px;
+  font-weight:700;
+  margin-bottom:30px;
+}
 
-    .box{
-      border:2px solid #e5e7eb;
-      border-radius:14px;
-      padding:14px;
-      position:relative;
-    }
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:18px;
+  margin-bottom:30px;
+}
 
-    .box label{
-      display:block;
-      font-size:13px;
-      font-weight:600;
-      color:#6b7280;
-      margin-bottom:8px;
-    }
+.box{
+  border:2px solid #e5e7eb;
+  border-radius:14px;
+  padding:14px;
+  position:relative;
+}
 
-    .box input{
-      width:100%;
-      border:none;
-      outline:none;
-      font-size:15px;
-    }
+.box label{
+  display:block;
+  font-size:13px;
+  font-weight:600;
+  margin-bottom:8px;
+  color:#6b7280;
+}
 
-    .suggestions{
-      position:absolute;
-      top:100%;
-      left:0;
-      right:0;
-      background:#fff;
-      border:1px solid #ddd;
-      border-radius:10px;
-      max-height:180px;
-      overflow:auto;
-      z-index:999;
-      display:none;
-    }
+.box input{
+  width:100%;
+  border:none;
+  outline:none;
+  font-size:15px;
+}
 
-    .suggestions div{
-      padding:10px;
-      cursor:pointer;
-      border-bottom:1px solid #f1f1f1;
-    }
+table{
+  width:100%;
+  border-collapse:collapse;
+}
 
-    .suggestions div:hover{
-      background:#f3f4f6;
-    }
+th{
+  background:#111827;
+  color:#fff;
+  padding:14px;
+  font-size:14px;
+}
 
-    table{
-      width:100%;
-      border-collapse:collapse;
-    }
+td{
+  border:1px solid #e5e7eb;
+  padding:10px;
+  text-align:center;
+}
 
-    th{
-      background:#111827;
-      color:#fff;
-      padding:14px;
-      font-size:14px;
-    }
+td input,
+td select{
+  width:100%;
+  border:none;
+  outline:none;
+  text-align:center;
+}
 
-    td{
-      border:1px solid #e5e7eb;
-      padding:10px;
-      text-align:center;
-    }
+.add-btn{
+  margin-top:20px;
+}
 
-    td input,
-    td select{
-      width:100%;
-      border:none;
-      outline:none;
-      text-align:center;
-      font-size:14px;
-    }
+.remove-btn{
+  background:#dc2626;
+  padding:8px 12px;
+  font-size:12px;
+}
 
-    .particular-box{
-      position:relative;
-    }
+.summary{
+  width:400px;
+  margin-left:auto;
+  margin-top:30px;
+}
 
-    .particular-suggestions{
-      position:absolute;
-      top:100%;
-      left:0;
-      right:0;
-      background:#fff;
-      border:1px solid #ddd;
-      border-radius:10px;
-      max-height:150px;
-      overflow:auto;
-      z-index:999;
-      display:none;
-    }
+.total-row{
+  background:#16a34a;
+  color:#fff;
+  font-weight:700;
+}
 
-    .particular-suggestions div{
-      padding:10px;
-      cursor:pointer;
-      border-bottom:1px solid #f1f1f1;
-      text-align:left;
-    }
+.status-box{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  background:#fff;
+  padding:10px 15px;
+  border-radius:12px;
+  border:1px solid #ddd;
+}
 
-    .particular-suggestions div:hover{
-      background:#f3f4f6;
-    }
+.dot{
+  width:14px;
+  height:14px;
+  border-radius:50%;
+  background:red;
+}
 
-    .remove-btn{
-      background:#dc2626;
-      padding:8px 12px;
-      font-size:12px;
-      border-radius:8px;
-    }
+.suggestions{
+  position:absolute;
+  top:100%;
+  left:0;
+  right:0;
+  background:#fff;
+  border:1px solid #ddd;
+  border-radius:10px;
+  max-height:180px;
+  overflow:auto;
+  display:none;
+  z-index:999;
+}
 
-    .summary{
-      width:400px;
-      margin-left:auto;
-      margin-top:30px;
-    }
+.suggestions div{
+  padding:10px;
+  cursor:pointer;
+}
 
-    .total-row{
-      background:#16a34a;
-      color:#fff;
-      font-weight:700;
-    }
+.suggestions div:hover{
+  background:#f3f4f6;
+}
 
-    .saved{
-      margin-top:40px;
-    }
+.saved{
+  margin-top:40px;
+}
 
-    .saved h2{
-      margin-bottom:15px;
-    }
+.saved h2{
+  margin-bottom:15px;
+}
 
-    @media print{
+@media print{
 
-      .topbar,
-      .saved,
-      .remove-btn,
-      .add-btn{
-        display:none !important;
-      }
+  .topbar,
+  .saved,
+  .add-btn,
+  .remove-btn{
+    display:none !important;
+  }
 
-      body{
-        background:#fff;
-        padding:0;
-      }
+  body{
+    background:#fff;
+    padding:0;
+  }
 
-      .invoice{
-        box-shadow:none;
-      }
+  .invoice{
+    box-shadow:none;
+  }
 
-    }
+}
 
-  </style>
+</style>
 
 </head>
 
@@ -244,7 +235,7 @@
 
   <div class="topbar">
 
-    <div class="btn-group">
+    <div class="left-top">
 
       <button class="dark" onclick="setType('PURCHASE INVOICE')">
         Purchase
@@ -256,7 +247,17 @@
 
     </div>
 
-    <div class="btn-group">
+    <div class="right-top">
+
+      <div class="status-box">
+
+        <div class="dot" id="apiDot"></div>
+
+        <span id="apiText">
+          API Disconnected
+        </span>
+
+      </div>
 
       <button class="blue" onclick="window.print()">
         Print Invoice
@@ -330,20 +331,22 @@
 
           <td>1</td>
 
-          <td class="particular-box">
+          <td>
 
-            <input type="text" class="particular-input" autocomplete="off">
-
-            <div class="particular-suggestions"></div>
+            <input type="text" class="particular">
 
           </td>
 
           <td>
+
             <input type="number" step="0.01" class="mtr" oninput="calculateTotal()">
+
           </td>
 
           <td>
+
             <input type="number" step="0.01" class="rate" oninput="calculateTotal()">
+
           </td>
 
           <td>
@@ -357,7 +360,9 @@
 
           </td>
 
-          <td class="amount">0.00</td>
+          <td class="amount">
+            0.00
+          </td>
 
           <td>
 
@@ -372,8 +377,6 @@
       </tbody>
 
     </table>
-
-    <br>
 
     <button class="dark add-btn" onclick="addRow()">
       + Add Item
@@ -404,38 +407,66 @@
 
   </div>
 
-  <div class="saved">
-
-    <h2>Saved Invoices</h2>
-
-    <table>
-
-      <thead>
-
-        <tr>
-
-          <th>Invoice Type</th>
-          <th>Company</th>
-          <th>Invoice No</th>
-          <th>Date</th>
-          <th>Total</th>
-
-        </tr>
-
-      </thead>
-
-      <tbody id="savedInvoices"></tbody>
-
-    </table>
-
-  </div>
-
 </div>
 
 <script>
 
+const API_URL = "https://script.google.com/macros/s/AKfycbw1lChpNMOOQhlnAgkogB_qVPln2rTMxAsunbRWESUwZI0dCvh9ZjIDrs1jG5-bPBGO/exec";
+
 let companies = [];
 let particulars = [];
+
+
+
+async function apiRequest(data){
+
+  const response = await fetch(API_URL,{
+
+    method:"POST",
+
+    headers:{
+      "Content-Type":"text/plain"
+    },
+
+    body:JSON.stringify(data)
+
+  });
+
+  return await response.json();
+
+}
+
+
+
+async function checkAPI(){
+
+  try{
+
+    const response = await fetch(API_URL);
+
+    const data = await response.json();
+
+    if(data.status == "success"){
+
+      document.getElementById("apiDot").style.background = "green";
+
+      document.getElementById("apiText").innerText = "API Connected";
+
+    }
+
+  }
+
+  catch(error){
+
+    document.getElementById("apiDot").style.background = "red";
+
+    document.getElementById("apiText").innerText = "API Disconnected";
+
+  }
+
+}
+
+
 
 function setType(type){
 
@@ -443,9 +474,12 @@ function setType(type){
 
 }
 
+
+
 function calculateTotal(){
 
   let subtotal = 0;
+
   let gstTotal = 0;
 
   document.querySelectorAll("#invoiceTable tbody tr").forEach(row=>{
@@ -460,11 +494,12 @@ function calculateTotal(){
 
     const gstAmount = amount * gst / 100;
 
-    const finalTotal = amount + gstAmount;
+    const total = amount + gstAmount;
 
-    row.querySelector(".amount").innerText = finalTotal.toFixed(2);
+    row.querySelector(".amount").innerText = total.toFixed(2);
 
     subtotal += amount;
+
     gstTotal += gstAmount;
 
   });
@@ -476,6 +511,8 @@ function calculateTotal(){
   document.getElementById("grandTotal").innerText = (subtotal + gstTotal).toFixed(2);
 
 }
+
+
 
 function addRow(){
 
@@ -489,12 +526,8 @@ function addRow(){
 
     <td>${rowCount}</td>
 
-    <td class="particular-box">
-
-      <input type="text" class="particular-input" autocomplete="off">
-
-      <div class="particular-suggestions"></div>
-
+    <td>
+      <input type="text" class="particular">
     </td>
 
     <td>
@@ -516,7 +549,9 @@ function addRow(){
 
     </td>
 
-    <td class="amount">0.00</td>
+    <td class="amount">
+      0.00
+    </td>
 
     <td>
 
@@ -528,9 +563,9 @@ function addRow(){
 
   `;
 
-  setupParticularSearch(row.querySelector(".particular-input"));
-
 }
+
+
 
 function removeRow(btn){
 
@@ -548,6 +583,8 @@ function removeRow(btn){
 
 }
 
+
+
 function updateRowNumbers(){
 
   document.querySelectorAll("#invoiceTable tbody tr").forEach((row,index)=>{
@@ -558,168 +595,65 @@ function updateRowNumbers(){
 
 }
 
-function saveInvoice(){
 
-  const rows = [];
+
+async function saveInvoice(){
+
+  const items = [];
 
   document.querySelectorAll("#invoiceTable tbody tr").forEach(row=>{
 
-    rows.push({
+    items.push({
 
-      particular: row.querySelector(".particular-input").value,
-      mtr: row.querySelector(".mtr").value,
-      rate: row.querySelector(".rate").value,
-      gst: row.querySelector(".gst").value,
-      total: row.querySelector(".amount").innerText
+      particular : row.querySelector(".particular").value,
+      mtr : row.querySelector(".mtr").value,
+      rate : row.querySelector(".rate").value,
+      gst : row.querySelector(".gst").value,
+      total : row.querySelector(".amount").innerText
 
     });
 
   });
 
-  const data = {
 
-    invoiceType: document.getElementById("invoiceType").innerText,
-    companyName: document.getElementById("companyName").value,
-    invoiceNo: document.getElementById("invoiceNo").value,
-    invoiceDate: document.getElementById("invoiceDate").value,
-    subtotal: document.getElementById("subtotal").innerText,
-    gstTotal: document.getElementById("gstTotal").innerText,
-    grandTotal: document.getElementById("grandTotal").innerText,
-    items: rows
+
+  const payload = {
+
+    action : "saveInvoice",
+
+    invoiceType : document.getElementById("invoiceType").innerText,
+
+    companyName : document.getElementById("companyName").value,
+
+    invoiceNo : document.getElementById("invoiceNo").value,
+
+    invoiceDate : document.getElementById("invoiceDate").value,
+
+    subtotal : document.getElementById("subtotal").innerText,
+
+    gstTotal : document.getElementById("gstTotal").innerText,
+
+    grandTotal : document.getElementById("grandTotal").innerText,
+
+    items : items
 
   };
 
-  google.script.run.withSuccessHandler(function(){
+
+
+  const result = await apiRequest(payload);
+
+  if(result.status == "saved"){
 
     alert("Invoice Saved Successfully");
 
-    loadInvoices();
-
-  }).saveInvoice(data);
+  }
 
 }
 
-function loadInvoices(){
 
-  google.script.run.withSuccessHandler(function(data){
 
-    const tbody = document.getElementById("savedInvoices");
-
-    tbody.innerHTML = "";
-
-    data.forEach(row=>{
-
-      tbody.innerHTML += `
-
-        <tr>
-
-          <td>${row[0]}</td>
-          <td>${row[1]}</td>
-          <td>${row[2]}</td>
-          <td>${row[3]}</td>
-          <td>${row[6]}</td>
-
-        </tr>
-
-      `;
-
-    });
-
-  }).getInvoices();
-
-}
-
-function setupCompanySearch(){
-
-  const input = document.getElementById("companyName");
-
-  const box = document.getElementById("companySuggestions");
-
-  input.addEventListener("input",function(){
-
-    const value = this.value.toLowerCase();
-
-    box.innerHTML = "";
-
-    if(!value){
-
-      box.style.display = "none";
-
-      return;
-
-    }
-
-    const matched = companies.filter(c=>c.toLowerCase().includes(value));
-
-    matched.forEach(name=>{
-
-      const div = document.createElement("div");
-
-      div.innerText = name;
-
-      div.onclick = function(){
-
-        input.value = name;
-
-        box.style.display = "none";
-
-      }
-
-      box.appendChild(div);
-
-    });
-
-    box.style.display = matched.length ? "block" : "none";
-
-  });
-
-}
-
-function setupParticularSearch(input){
-
-  const box = input.nextElementSibling;
-
-  input.addEventListener("input",function(){
-
-    const value = this.value.toLowerCase();
-
-    box.innerHTML = "";
-
-    if(!value){
-
-      box.style.display = "none";
-
-      return;
-
-    }
-
-    const matched = particulars.filter(p=>p.toLowerCase().includes(value));
-
-    matched.forEach(name=>{
-
-      const div = document.createElement("div");
-
-      div.innerText = name;
-
-      div.onclick = function(){
-
-        input.value = name;
-
-        box.style.display = "none";
-
-      }
-
-      box.appendChild(div);
-
-    });
-
-    box.style.display = matched.length ? "block" : "none";
-
-  });
-
-}
-
-window.onload = function(){
+window.onload = async function(){
 
   document.getElementById("invoiceDate").value =
   new Date().toISOString().split('T')[0];
@@ -728,27 +662,7 @@ window.onload = function(){
 
   calculateTotal();
 
-  loadInvoices();
-
-  google.script.run.withSuccessHandler(function(data){
-
-    companies = data;
-
-    setupCompanySearch();
-
-  }).getCompanies();
-
-  google.script.run.withSuccessHandler(function(data){
-
-    particulars = data;
-
-    document.querySelectorAll(".particular-input").forEach(input=>{
-
-      setupParticularSearch(input);
-
-    });
-
-  }).getParticulars();
+  checkAPI();
 
 }
 
