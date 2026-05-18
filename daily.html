@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Delhivery Tracking Manager</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
+body{
+  background:#f3f4f6;
+  padding:20px;
+}
+
+.container{
+  max-width:1200px;
+  margin:auto;
+}
+
+.card{
+  background:#fff;
+  border-radius:20px;
+  padding:30px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.08);
+}
+
+.title{
+  font-size:32px;
+  font-weight:700;
+  margin-bottom:25px;
+}
+
+.search-box{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:30px;
+}
+
+input{
+  flex:1;
+  border:2px solid #e5e7eb;
+  border-radius:14px;
+  padding:14px;
+  font-size:15px;
+  outline:none;
+}
+
+button{
+  border:none;
+  padding:14px 22px;
+  border-radius:14px;
+  cursor:pointer;
+  color:#fff;
+  font-size:14px;
+  font-weight:600;
+}
+
+.blue{
+  background:#2563eb;
+}
+
+.green{
+  background:#16a34a;
+}
+
+.red{
+  background:#dc2626;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:18px;
+  margin-top:20px;
+}
+
+.box{
+  background:#f9fafb;
+  border:2px solid #e5e7eb;
+  border-radius:16px;
+  padding:18px;
+}
+
+.label{
+  font-size:13px;
+  color:#6b7280;
+  margin-bottom:8px;
+  font-weight:600;
+}
+
+.value{
+  font-size:16px;
+  font-weight:600;
+  word-break:break-word;
+}
+
+.timeline{
+  margin-top:30px;
+}
+
+.timeline-item{
+  border-left:4px solid #2563eb;
+  padding-left:15px;
+  margin-bottom:20px;
+}
+
+.timeline-status{
+  font-weight:700;
+  margin-bottom:5px;
+}
+
+.timeline-date{
+  font-size:13px;
+  color:#6b7280;
+}
+
+.action-buttons{
+  display:flex;
+  gap:12px;
+  margin-top:30px;
+  flex-wrap:wrap;
+}
+
+.loader{
+  display:none;
+  margin-top:20px;
+  font-weight:600;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="card">
+
+    <div class="title">
+      Delhivery Tracking Manager
+    </div>
+
+    <div class="search-box">
+
+      <input
+        type="text"
+        id="trackingNo"
+        placeholder="Enter Tracking Number"
+      >
+
+      <button class="blue" onclick="searchTracking()">
+        Search Tracking
+      </button>
+
+    </div>
+
+    <div class="loader" id="loader">
+      Loading Tracking Details...
+    </div>
+
+    <div id="result" style="display:none;">
+
+      <div class="grid">
+
+        <div class="box">
+          <div class="label">Tracking Number</div>
+          <div class="value" id="tracking"></div>
+        </div>
+
+        <div class="box">
+          <div class="label">Customer Name</div>
+          <div class="value" id="customer"></div>
+        </div>
+
+        <div class="box">
+          <div class="label">Mobile</div>
+          <div class="value" id="mobile"></div>
+        </div>
+
+        <div class="box">
+          <div class="label">Address</div>
+          <div class="value" id="address"></div>
+        </div>
+
+        <div class="box">
+          <div class="label">Current Status</div>
+          <div class="value" id="status"></div>
+        </div>
+
+        <div class="box">
+          <div class="label">Payment Mode</div>
+          <div class="value" id="payment"></div>
+        </div>
+
+        <div class="box">
+          <div class="label">Amount</div>
+          <div class="value" id="amount"></div>
+        </div>
+
+        <div class="box">
+          <div class="label">Weight</div>
+          <div class="value" id="weight"></div>
+        </div>
+
+        <div class="box">
+          <div class="label">Origin</div>
+          <div class="value" id="origin"></div>
+        </div>
+
+        <div class="box">
+          <div class="label">Destination</div>
+          <div class="value" id="destination"></div>
+        </div>
+
+      </div>
+
+      <div class="action-buttons">
+
+        <button class="green" onclick="saveData('Pickup')">
+          Save In Pickup
+        </button>
+
+        <button class="red" onclick="saveData('Return')">
+          Save In Return
+        </button>
+
+      </div>
+
+      <div class="timeline">
+
+        <h2 style="margin-bottom:20px;">
+          Tracking Timeline
+        </h2>
+
+        <div id="timelineData"></div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+const API_URL = "https://script.google.com/macros/s/AKfycbykAT6MNRqWRXgu1DdNrll2DaNVKz4vCQtx2dLUoS6XEGG6tRpjCGeu38DbCFuXunBo/exec";
+let trackingData = {};
+
+function searchTracking(){
+
+  const trackingNo = document.getElementById("trackingNo").value.trim();
+
+  if(!trackingNo){
+
+    alert("Enter tracking number");
+
+    return;
+
+  }
+
+  document.getElementById("loader").style.display = "block";
+
+  google.script.run
+  .withSuccessHandler(showResult)
+  .getTrackingDetails(trackingNo);
+
+}
+
+function showResult(data){
+
+  document.getElementById("loader").style.display = "none";
+
+  if(data.status != "success"){
+
+    alert(data.message || "Tracking not found");
+
+    return;
+
+  }
+
+  trackingData = data;
+
+  document.getElementById("result").style.display = "block";
+
+  document.getElementById("tracking").innerText = data.trackingNo;
+
+  document.getElementById("customer").innerText = data.customerName;
+
+  document.getElementById("mobile").innerText = data.mobile;
+
+  document.getElementById("address").innerText = data.address;
+
+  document.getElementById("status").innerText = data.currentStatus;
+
+  document.getElementById("payment").innerText = data.paymentMode;
+
+  document.getElementById("amount").innerText = data.amount;
+
+  document.getElementById("weight").innerText = data.weight;
+
+  document.getElementById("origin").innerText = data.origin;
+
+  document.getElementById("destination").innerText = data.destination;
+
+  let timelineHTML = "";
+
+  data.scans.forEach(scan=>{
+
+    timelineHTML += `
+
+      <div class="timeline-item">
+
+        <div class="timeline-status">
+          ${scan.ScanDetail.Scan}
+        </div>
+
+        <div class="timeline-date">
+          ${scan.ScanDetail.ScanDateTime}
+        </div>
+
+      </div>
+
+    `;
+
+  });
+
+  document.getElementById("timelineData").innerHTML = timelineHTML;
+
+}
+
+function saveData(type){
+
+  trackingData.type = type;
+
+  google.script.run
+  .withSuccessHandler(function(response){
+
+    if(response.status == "saved"){
+
+      alert(type + " Saved Successfully");
+
+    }
+
+    else{
+
+      alert("Error Saving Data");
+
+    }
+
+  })
+  .saveEntry(trackingData);
+
+}
+
+</script>
+
+</body>
+</html>
