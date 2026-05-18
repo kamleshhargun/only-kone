@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,8 +33,8 @@ body{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  gap:10px;
   flex-wrap:wrap;
+  gap:10px;
   margin-bottom:20px;
 }
 
@@ -67,6 +68,10 @@ button{
   background:#2563eb;
 }
 
+.red{
+  background:#dc2626;
+}
+
 .invoice{
   background:#fff;
   padding:30px;
@@ -92,15 +97,14 @@ button{
   border-radius:14px;
   padding:14px;
   position:relative;
-  background:#fff;
 }
 
 .box label{
   display:block;
   font-size:13px;
   font-weight:600;
-  color:#6b7280;
   margin-bottom:8px;
+  color:#6b7280;
 }
 
 .box input{
@@ -108,7 +112,6 @@ button{
   border:none;
   outline:none;
   font-size:15px;
-  background:transparent;
 }
 
 .suggestions{
@@ -219,8 +222,10 @@ td select{
 
   .topbar,
   .saved,
+  .add-btn,
   .remove-btn,
-  .add-btn{
+  .edit-btn,
+  .delete-btn{
     display:none !important;
   }
 
@@ -231,7 +236,6 @@ td select{
 
   .invoice{
     box-shadow:none;
-    padding:0;
   }
 
 }
@@ -353,7 +357,7 @@ td select{
           <td>
 
             <input 
-              type="number" 
+              type="number"
               step="0.01"
               class="mtr"
               oninput="calculateTotal()"
@@ -377,8 +381,10 @@ td select{
             <select class="gst" onchange="calculateTotal()">
 
               <option value="0">No GST</option>
-
               <option value="5">GST 5%</option>
+              <option value="12">GST 12%</option>
+              <option value="18">GST 18%</option>
+              <option value="28">GST 28%</option>
 
             </select>
 
@@ -446,6 +452,7 @@ td select{
           <th>Invoice No</th>
           <th>Date</th>
           <th>Total</th>
+          <th>Action</th>
 
         </tr>
 
@@ -461,12 +468,10 @@ td select{
 
 <script>
 
-const API_URL = "https://script.google.com/macros/s/AKfycbxY40ABhc5tmGDuH0b-Yde0Y7yWcswZHt9J8YkCs5eoXUSnPbyvNs6R1wdoYldLm_SG/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycby-WTK46eBc5vdN1P2qP81nVbT7tQC3WFBMMx9GTrCDtUgPLLaD9IXU1r17gQVzA3To/exec";
 
 let companies = [];
 let particulars = [];
-
-
 
 async function apiRequest(payload){
 
@@ -485,8 +490,6 @@ async function apiRequest(payload){
   return await response.json();
 
 }
-
-
 
 async function checkAPI(){
 
@@ -516,15 +519,11 @@ async function checkAPI(){
 
 }
 
-
-
 function setInvoiceType(type){
 
   document.getElementById("invoiceType").innerText = type;
 
 }
-
-
 
 function calculateTotal(){
 
@@ -561,8 +560,6 @@ function calculateTotal(){
   document.getElementById("grandTotal").innerText = (subtotal + gstTotal).toFixed(2);
 
 }
-
-
 
 function addRow(){
 
@@ -611,8 +608,10 @@ function addRow(){
       <select class="gst" onchange="calculateTotal()">
 
         <option value="0">No GST</option>
-
         <option value="5">GST 5%</option>
+        <option value="12">GST 12%</option>
+        <option value="18">GST 18%</option>
+        <option value="28">GST 28%</option>
 
       </select>
 
@@ -636,8 +635,6 @@ function addRow(){
 
 }
 
-
-
 function removeRow(button){
 
   const yes = confirm("Are you sure?");
@@ -654,8 +651,6 @@ function removeRow(button){
 
 }
 
-
-
 function updateRowNumbers(){
 
   document.querySelectorAll("#invoiceTable tbody tr").forEach((row,index)=>{
@@ -665,8 +660,6 @@ function updateRowNumbers(){
   });
 
 }
-
-
 
 async function saveInvoice(){
 
@@ -679,8 +672,6 @@ async function saveInvoice(){
     return;
 
   }
-
-
 
   const items = [];
 
@@ -708,8 +699,6 @@ async function saveInvoice(){
 
   });
 
-
-
   if(invalidParticular){
 
     alert("Select valid particular");
@@ -717,8 +706,6 @@ async function saveInvoice(){
     return;
 
   }
-
-
 
   const payload = {
 
@@ -742,8 +729,6 @@ async function saveInvoice(){
 
   };
 
-
-
   const result = await apiRequest(payload);
 
   if(result.status === "saved"){
@@ -752,11 +737,35 @@ async function saveInvoice(){
 
     loadSavedInvoices();
 
+    resetInvoice();
+
   }
 
 }
 
+function resetInvoice(){
 
+  document.getElementById("companyName").value = "";
+
+  document.getElementById("invoiceNo").value = "";
+
+  document.getElementById("invoiceDate").value =
+  new Date().toISOString().split('T')[0];
+
+  document.getElementById("invoiceType").innerText =
+  "PURCHASE INVOICE";
+
+  const tbody = document.querySelector("#invoiceTable tbody");
+
+  tbody.innerHTML = "";
+
+  addRow();
+
+  calculateTotal();
+
+  document.getElementById("companyName").focus();
+
+}
 
 async function loadSavedInvoices(){
 
@@ -766,15 +775,11 @@ async function loadSavedInvoices(){
 
   });
 
-
-
   const tbody = document.getElementById("savedInvoiceBody");
 
   tbody.innerHTML = "";
 
-
-
-  result.forEach(row=>{
+  result.forEach((row,index)=>{
 
     tbody.innerHTML += `
 
@@ -783,8 +788,26 @@ async function loadSavedInvoices(){
         <td>${row[0]}</td>
         <td>${row[1]}</td>
         <td>${row[2]}</td>
-        <td>${row[3]}</td>
+        <td>${formatDate(row[3])}</td>
         <td>${row[11]}</td>
+
+        <td>
+
+          <button 
+            class="blue edit-btn"
+            onclick="editInvoice(${index})"
+          >
+            Edit
+          </button>
+
+          <button 
+            class="red delete-btn"
+            onclick="deleteInvoice(${index})"
+          >
+            Delete
+          </button>
+
+        </td>
 
       </tr>
 
@@ -794,7 +817,167 @@ async function loadSavedInvoices(){
 
 }
 
+function formatDate(dateString){
 
+  const date = new Date(dateString);
+
+  const day = String(date.getDate()).padStart(2,'0');
+
+  const month = String(date.getMonth() + 1).padStart(2,'0');
+
+  const year = date.getFullYear();
+
+  return `${day}-${month}-${year}`;
+
+}
+
+async function editInvoice(index){
+
+  const result = await apiRequest({
+
+    action : "getInvoices"
+
+  });
+
+  const row = result[index];
+
+  document.getElementById("invoiceType").innerText = row[0];
+
+  document.getElementById("companyName").value = row[1];
+
+  document.getElementById("invoiceNo").value = row[2];
+
+  document.getElementById("invoiceDate").value =
+  new Date(row[3]).toISOString().split('T')[0];
+
+  const tbody = document.querySelector("#invoiceTable tbody");
+
+  tbody.innerHTML = `
+
+    <tr>
+
+      <td>1</td>
+
+      <td>
+
+        <input 
+          type="text" 
+          class="particular"
+          value="${row[4]}"
+          autocomplete="off"
+        >
+
+        <div class="suggestions"></div>
+
+      </td>
+
+      <td>
+
+        <input 
+          type="number"
+          step="0.01"
+          class="mtr"
+          value="${row[5]}"
+          oninput="calculateTotal()"
+        >
+
+      </td>
+
+      <td>
+
+        <input 
+          type="number"
+          step="0.01"
+          class="rate"
+          value="${row[6]}"
+          oninput="calculateTotal()"
+        >
+
+      </td>
+
+      <td>
+
+        <select class="gst" onchange="calculateTotal()">
+
+          <option value="0" ${row[7] == 0 ? "selected" : ""}>
+            No GST
+          </option>
+
+          <option value="5" ${row[7] == 5 ? "selected" : ""}>
+            GST 5%
+          </option>
+
+          <option value="12" ${row[7] == 12 ? "selected" : ""}>
+            GST 12%
+          </option>
+
+          <option value="18" ${row[7] == 18 ? "selected" : ""}>
+            GST 18%
+          </option>
+
+          <option value="28" ${row[7] == 28 ? "selected" : ""}>
+            GST 28%
+          </option>
+
+        </select>
+
+      </td>
+
+      <td class="amount">
+        ${row[8]}
+      </td>
+
+      <td>
+
+        <button class="remove-btn" onclick="removeRow(this)">
+          Remove
+        </button>
+
+      </td>
+
+    </tr>
+
+  `;
+
+  setupParticularSearch(document.querySelector("#invoiceTable tbody tr"));
+
+  calculateTotal();
+
+  window.scrollTo({
+
+    top:0,
+    behavior:"smooth"
+
+  });
+
+}
+
+async function deleteInvoice(index){
+
+  const yes = confirm("Are you sure want to delete invoice?");
+
+  if(!yes){
+
+    return;
+
+  }
+
+  const result = await apiRequest({
+
+    action : "deleteInvoice",
+    index : index
+
+  });
+
+  if(result.status === "deleted"){
+
+    alert("Invoice Deleted");
+
+    loadSavedInvoices();
+
+  }
+
+}
 
 function setupCompanySearch(){
 
@@ -802,15 +985,11 @@ function setupCompanySearch(){
 
   const box = document.getElementById("companySuggestions");
 
-
-
   input.addEventListener("input",function(){
 
     const value = this.value.toLowerCase();
 
     box.innerHTML = "";
-
-
 
     if(!value){
 
@@ -819,8 +998,6 @@ function setupCompanySearch(){
       return;
 
     }
-
-
 
     const filtered = companies.filter(item=>
 
@@ -828,8 +1005,6 @@ function setupCompanySearch(){
 
     );
 
-
-
     filtered.forEach(item=>{
 
       const div = document.createElement("div");
@@ -848,15 +1023,11 @@ function setupCompanySearch(){
 
     });
 
-
-
     box.style.display = filtered.length ? "block" : "none";
 
   });
 
 }
-
-
 
 function setupParticularSearch(row){
 
@@ -864,15 +1035,11 @@ function setupParticularSearch(row){
 
   const box = row.querySelector(".suggestions");
 
-
-
   input.addEventListener("input",function(){
 
     const value = this.value.toLowerCase();
 
     box.innerHTML = "";
-
-
 
     if(!value){
 
@@ -882,15 +1049,11 @@ function setupParticularSearch(row){
 
     }
 
-
-
     const filtered = particulars.filter(item=>
 
       item.toLowerCase().includes(value)
 
     );
-
-
 
     filtered.forEach(item=>{
 
@@ -910,15 +1073,11 @@ function setupParticularSearch(row){
 
     });
 
-
-
     box.style.display = filtered.length ? "block" : "none";
 
   });
 
 }
-
-
 
 window.onload = async function(){
 
@@ -931,23 +1090,17 @@ window.onload = async function(){
 
   checkAPI();
 
-
-
   companies = await apiRequest({
 
     action : "getCompanies"
 
   });
 
-
-
   particulars = await apiRequest({
 
     action : "getParticulars"
 
   });
-
-
 
   setupCompanySearch();
 
@@ -961,3 +1114,4 @@ window.onload = async function(){
 
 </body>
 </html>
+```
