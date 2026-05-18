@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Invoice Generator</title>
+<title>GST Invoice Generator</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
@@ -23,7 +23,7 @@ body{
 }
 
 .container{
-    max-width:1200px;
+    max-width:1250px;
     margin:auto;
 }
 
@@ -31,48 +31,37 @@ body{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    flex-wrap:wrap;
     gap:15px;
+    flex-wrap:wrap;
     margin-bottom:20px;
 }
 
-.type-box{
-    display:flex;
-    gap:10px;
-}
-
-.type-btn{
-    background:#111827;
-    color:#fff;
-    border:none;
-    padding:12px 22px;
-    border-radius:10px;
-    cursor:pointer;
-    font-size:15px;
-    font-weight:600;
-}
-
+.type-box,
 .action-box{
     display:flex;
     gap:10px;
     flex-wrap:wrap;
 }
 
-.action-btn{
+.btn{
     border:none;
     padding:12px 22px;
-    border-radius:10px;
+    border-radius:12px;
     cursor:pointer;
     font-size:14px;
     font-weight:600;
     color:#fff;
 }
 
-.print-btn{
+.dark-btn{
+    background:#111827;
+}
+
+.blue-btn{
     background:#2563eb;
 }
 
-.save-btn{
+.green-btn{
     background:#16a34a;
 }
 
@@ -86,8 +75,8 @@ body{
 .invoice-title{
     font-size:32px;
     font-weight:700;
-    margin-bottom:30px;
     color:#111827;
+    margin-bottom:30px;
 }
 
 .input-grid{
@@ -106,10 +95,10 @@ body{
 
 .input-box label{
     display:block;
+    margin-bottom:8px;
     font-size:13px;
     font-weight:600;
     color:#6b7280;
-    margin-bottom:8px;
 }
 
 .input-box input{
@@ -117,7 +106,6 @@ body{
     border:none;
     outline:none;
     font-size:15px;
-    color:#111827;
     background:transparent;
 }
 
@@ -135,44 +123,48 @@ table th{
     color:#fff;
     padding:14px;
     font-size:14px;
-    text-align:left;
+    text-align:center;
 }
 
 table td{
     border:1px solid #e5e7eb;
     padding:10px;
+    text-align:center;
 }
 
 table input{
     width:100%;
     border:none;
     outline:none;
+    text-align:center;
     font-size:14px;
 }
 
-.amount{
-    font-weight:600;
+.gst-box{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+
+.gst-box label{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    font-size:12px;
 }
 
 .add-row{
     margin-top:18px;
-    background:#111827;
-    color:#fff;
-    border:none;
-    padding:12px 18px;
-    border-radius:10px;
-    cursor:pointer;
-    font-size:14px;
-    font-weight:600;
 }
 
 .summary{
-    width:350px;
+    width:400px;
     margin-left:auto;
-    margin-top:35px;
+    margin-top:30px;
 }
 
-.summary table td{
+.summary td{
     padding:12px;
     font-size:15px;
 }
@@ -181,6 +173,37 @@ table input{
     background:#16a34a;
     color:#fff;
     font-weight:700;
+}
+
+.saved-section{
+    margin-top:40px;
+}
+
+.saved-title{
+    font-size:24px;
+    font-weight:700;
+    margin-bottom:18px;
+    color:#111827;
+}
+
+.saved-table{
+    background:#fff;
+    border-radius:16px;
+    overflow:hidden;
+    box-shadow:0 5px 20px rgba(0,0,0,0.06);
+}
+
+.saved-table table{
+    width:100%;
+}
+
+.saved-table th{
+    background:#111827;
+    color:#fff;
+}
+
+.saved-table td{
+    background:#fff;
 }
 
 @media(max-width:768px){
@@ -200,18 +223,21 @@ table input{
 
 @media print{
 
-    .topbar,
-    .add-row{
-        display:none;
-    }
-
     body{
         background:#fff;
         padding:0;
     }
 
+    .topbar,
+    .saved-section,
+    .add-row{
+        display:none !important;
+    }
+
     .invoice{
         box-shadow:none;
+        border-radius:0;
+        padding:0;
     }
 }
 
@@ -226,11 +252,11 @@ table input{
 
         <div class="type-box">
 
-            <button class="type-btn" onclick="setInvoiceType('PURCHASE INVOICE')">
+            <button class="btn dark-btn" onclick="setInvoiceType('PURCHASE INVOICE')">
                 Purchase
             </button>
 
-            <button class="type-btn" onclick="setInvoiceType('SALES INVOICE')">
+            <button class="btn dark-btn" onclick="setInvoiceType('SALES INVOICE')">
                 Sales
             </button>
 
@@ -238,11 +264,11 @@ table input{
 
         <div class="action-box">
 
-            <button class="action-btn print-btn" onclick="window.print()">
+            <button class="btn blue-btn" onclick="printInvoice()">
                 Print Invoice
             </button>
 
-            <button class="action-btn save-btn" onclick="saveInvoice()">
+            <button class="btn green-btn" onclick="saveInvoice()">
                 Save Invoice
             </button>
 
@@ -250,7 +276,7 @@ table input{
 
     </div>
 
-    <div class="invoice" id="invoice">
+    <div class="invoice" id="invoiceArea">
 
         <div class="invoice-title" id="invoiceType">
             PURCHASE INVOICE
@@ -260,12 +286,12 @@ table input{
 
             <div class="input-box">
                 <label>Company Name</label>
-                <input type="text" id="companyName" autofocus>
+                <input type="text" id="companyName">
             </div>
 
             <div class="input-box">
                 <label>Invoice No</label>
-                <input type="text">
+                <input type="text" id="invoiceNo">
             </div>
 
             <div class="input-box">
@@ -286,7 +312,7 @@ table input{
                         <th>Item Description</th>
                         <th>Qty</th>
                         <th>Rate</th>
-                        <th>GST %</th>
+                        <th>GST</th>
                         <th>Total</th>
                     </tr>
 
@@ -299,19 +325,38 @@ table input{
                         <td>1</td>
 
                         <td>
-                            <input type="text" placeholder="Item Name">
+                            <input type="text">
                         </td>
 
                         <td>
-                            <input type="number" value="1" class="qty" oninput="calculateTotal()">
+                            <input type="number" class="qty" oninput="calculateTotal()">
                         </td>
 
                         <td>
-                            <input type="number" value="0" class="rate" oninput="calculateTotal()">
+                            <input type="number" class="rate" oninput="calculateTotal()">
                         </td>
 
                         <td>
-                            <input type="number" value="18" class="gst" oninput="calculateTotal()">
+
+                            <div class="gst-box">
+
+                                <label>
+                                    <input type="checkbox" class="sgst" onchange="calculateTotal()">
+                                    SGST 2.5%
+                                </label>
+
+                                <label>
+                                    <input type="checkbox" class="cgst" onchange="calculateTotal()">
+                                    CGST 2.5%
+                                </label>
+
+                                <label>
+                                    <input type="checkbox" class="igst" onchange="calculateTotal()">
+                                    IGST 5%
+                                </label>
+
+                            </div>
+
                         </td>
 
                         <td class="amount">
@@ -326,9 +371,11 @@ table input{
 
         </div>
 
-        <button class="add-row" onclick="addRow()">
-            + Add Item
-        </button>
+        <div class="add-row">
+            <button class="btn dark-btn" onclick="addRow()">
+                + Add Item
+            </button>
+        </div>
 
         <div class="summary">
 
@@ -340,7 +387,7 @@ table input{
                 </tr>
 
                 <tr>
-                    <td>GST Total</td>
+                    <td>Total GST</td>
                     <td id="gstTotal">0.00</td>
                 </tr>
 
@@ -348,6 +395,38 @@ table input{
                     <td>Grand Total</td>
                     <td id="grandTotal">0.00</td>
                 </tr>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <div class="saved-section">
+
+        <div class="saved-title">
+            Saved Invoices
+        </div>
+
+        <div class="saved-table">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Invoice Type</th>
+                        <th>Company Name</th>
+                        <th>Invoice No</th>
+                        <th>Date</th>
+                        <th>Grand Total</th>
+                    </tr>
+
+                </thead>
+
+                <tbody id="savedInvoicesBody">
+
+                </tbody>
 
             </table>
 
@@ -378,19 +457,38 @@ function addRow(){
         <td>${rowCount}</td>
 
         <td>
-            <input type="text" placeholder="Item Name">
+            <input type="text">
         </td>
 
         <td>
-            <input type="number" value="1" class="qty" oninput="calculateTotal()">
+            <input type="number" class="qty" oninput="calculateTotal()">
         </td>
 
         <td>
-            <input type="number" value="0" class="rate" oninput="calculateTotal()">
+            <input type="number" class="rate" oninput="calculateTotal()">
         </td>
 
         <td>
-            <input type="number" value="18" class="gst" oninput="calculateTotal()">
+
+            <div class="gst-box">
+
+                <label>
+                    <input type="checkbox" class="sgst" onchange="calculateTotal()">
+                    SGST 2.5%
+                </label>
+
+                <label>
+                    <input type="checkbox" class="cgst" onchange="calculateTotal()">
+                    CGST 2.5%
+                </label>
+
+                <label>
+                    <input type="checkbox" class="igst" onchange="calculateTotal()">
+                    IGST 5%
+                </label>
+
+            </div>
+
         </td>
 
         <td class="amount">
@@ -399,7 +497,6 @@ function addRow(){
 
     `;
 
-    calculateTotal();
 }
 
 function calculateTotal(){
@@ -415,15 +512,27 @@ function calculateTotal(){
 
         const rate = parseFloat(row.querySelector(".rate").value) || 0;
 
-        const gst = parseFloat(row.querySelector(".gst").value) || 0;
-
         const amount = qty * rate;
 
-        const gstAmount = (amount * gst) / 100;
+        let gstPercent = 0;
 
-        const total = amount + gstAmount;
+        if(row.querySelector(".sgst").checked){
+            gstPercent += 2.5;
+        }
 
-        row.querySelector(".amount").innerText = total.toFixed(2);
+        if(row.querySelector(".cgst").checked){
+            gstPercent += 2.5;
+        }
+
+        if(row.querySelector(".igst").checked){
+            gstPercent += 5;
+        }
+
+        const gstAmount = amount * gstPercent / 100;
+
+        const finalAmount = amount + gstAmount;
+
+        row.querySelector(".amount").innerText = finalAmount.toFixed(2);
 
         subtotal += amount;
 
@@ -443,25 +552,83 @@ function calculateTotal(){
 
 function saveInvoice(){
 
-    const invoiceContent = document.getElementById("invoice").innerHTML;
+    const invoiceType = document.getElementById("invoiceType").innerText;
 
-    localStorage.setItem("savedInvoice", invoiceContent);
+    const companyName = document.getElementById("companyName").value;
+
+    const invoiceNo = document.getElementById("invoiceNo").value;
+
+    const invoiceDate = document.getElementById("invoiceDate").value;
+
+    const grandTotal = document.getElementById("grandTotal").innerText;
+
+    const invoices = JSON.parse(localStorage.getItem("savedInvoices")) || [];
+
+    invoices.push({
+        invoiceType,
+        companyName,
+        invoiceNo,
+        invoiceDate,
+        grandTotal
+    });
+
+    localStorage.setItem("savedInvoices", JSON.stringify(invoices));
+
+    loadSavedInvoices();
 
     alert("Invoice Saved Successfully!");
 
 }
 
+function loadSavedInvoices(){
+
+    const invoices = JSON.parse(localStorage.getItem("savedInvoices")) || [];
+
+    const tbody = document.getElementById("savedInvoicesBody");
+
+    tbody.innerHTML = "";
+
+    invoices.forEach(invoice => {
+
+        tbody.innerHTML += `
+
+            <tr>
+
+                <td>${invoice.invoiceType}</td>
+
+                <td>${invoice.companyName}</td>
+
+                <td>${invoice.invoiceNo}</td>
+
+                <td>${invoice.invoiceDate}</td>
+
+                <td>${invoice.grandTotal}</td>
+
+            </tr>
+
+        `;
+
+    });
+
+}
+
+function printInvoice(){
+
+    window.print();
+
+}
+
 window.onload = function(){
 
-    calculateTotal();
-
-    // Auto current date
     const today = new Date().toISOString().split('T')[0];
 
     document.getElementById("invoiceDate").value = today;
 
-    // Auto focus on company name
     document.getElementById("companyName").focus();
+
+    calculateTotal();
+
+    loadSavedInvoices();
 
 }
 
