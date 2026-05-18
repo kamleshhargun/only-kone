@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>GST Invoice Generator</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Invoice Generator</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
+
 *{
     margin:0;
     padding:0;
@@ -29,9 +31,9 @@ body{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    margin-bottom:20px;
-    gap:15px;
     flex-wrap:wrap;
+    gap:15px;
+    margin-bottom:20px;
 }
 
 .type-box{
@@ -40,118 +42,83 @@ body{
 }
 
 .type-btn{
-    padding:12px 22px;
-    border:none;
-    border-radius:8px;
     background:#111827;
     color:#fff;
+    border:none;
+    padding:12px 22px;
+    border-radius:10px;
     cursor:pointer;
     font-size:15px;
     font-weight:600;
 }
 
-.action-btn{
-    padding:12px 20px;
-    border:none;
-    border-radius:8px;
-    cursor:pointer;
-    font-weight:600;
-    font-size:14px;
+.action-box{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
 }
 
-.save-btn{
-    background:#16a34a;
+.action-btn{
+    border:none;
+    padding:12px 22px;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:14px;
+    font-weight:600;
     color:#fff;
 }
 
 .print-btn{
     background:#2563eb;
-    color:#fff;
+}
+
+.save-btn{
+    background:#16a34a;
 }
 
 .invoice{
     background:#fff;
-    border-radius:15px;
+    border-radius:20px;
     padding:30px;
     box-shadow:0 10px 30px rgba(0,0,0,0.08);
-}
-
-.header{
-    display:flex;
-    justify-content:space-between;
-    gap:20px;
-    flex-wrap:wrap;
-    margin-bottom:30px;
-}
-
-.logo-box{
-    width:180px;
-    height:120px;
-    border:2px dashed #d1d5db;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    border-radius:10px;
-    overflow:hidden;
-    position:relative;
-}
-
-.logo-box input{
-    position:absolute;
-    width:100%;
-    height:100%;
-    opacity:0;
-    cursor:pointer;
-}
-
-.logo-box img{
-    width:100%;
-    height:100%;
-    object-fit:contain;
-}
-
-.editable{
-    border:none;
-    border-bottom:1px dashed #ccc;
-    width:100%;
-    outline:none;
-    padding:4px;
-    font-size:14px;
-}
-
-.company-details{
-    flex:1;
 }
 
 .invoice-title{
     font-size:32px;
     font-weight:700;
-    margin-bottom:15px;
+    margin-bottom:30px;
+    color:#111827;
 }
 
-.grid{
+.input-grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-    gap:15px;
-    margin-bottom:25px;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:18px;
+    margin-bottom:30px;
 }
 
-.box{
-    border:1px solid #e5e7eb;
-    border-radius:10px;
-    padding:15px;
+.input-box{
+    background:#fff;
+    border:2px solid #e5e7eb;
+    border-radius:14px;
+    padding:14px;
 }
 
-.box h3{
-    margin-bottom:10px;
-    font-size:17px;
-}
-
-label{
-    font-size:13px;
-    color:#555;
-    margin-top:8px;
+.input-box label{
     display:block;
+    font-size:13px;
+    font-weight:600;
+    color:#6b7280;
+    margin-bottom:8px;
+}
+
+.input-box input{
+    width:100%;
+    border:none;
+    outline:none;
+    font-size:15px;
+    color:#111827;
+    background:transparent;
 }
 
 .table-responsive{
@@ -161,14 +128,14 @@ label{
 table{
     width:100%;
     border-collapse:collapse;
-    margin-top:15px;
 }
 
 table th{
     background:#111827;
     color:#fff;
-    padding:12px;
+    padding:14px;
     font-size:14px;
+    text-align:left;
 }
 
 table td{
@@ -180,55 +147,40 @@ table input{
     width:100%;
     border:none;
     outline:none;
+    font-size:14px;
+}
+
+.amount{
+    font-weight:600;
 }
 
 .add-row{
-    margin-top:15px;
+    margin-top:18px;
     background:#111827;
     color:#fff;
     border:none;
-    padding:10px 16px;
-    border-radius:8px;
+    padding:12px 18px;
+    border-radius:10px;
     cursor:pointer;
+    font-size:14px;
+    font-weight:600;
 }
 
 .summary{
-    margin-top:30px;
-    margin-left:auto;
     width:350px;
+    margin-left:auto;
+    margin-top:35px;
 }
 
 .summary table td{
-    padding:10px;
+    padding:12px;
+    font-size:15px;
 }
 
-.total{
+.total-row{
     background:#16a34a;
     color:#fff;
     font-weight:700;
-}
-
-.note{
-    margin-top:30px;
-}
-
-.footer{
-    margin-top:40px;
-    display:flex;
-    justify-content:space-between;
-    gap:20px;
-    flex-wrap:wrap;
-}
-
-.signature{
-    width:250px;
-    text-align:center;
-}
-
-.signature-line{
-    border-top:1px solid #000;
-    margin-top:60px;
-    padding-top:8px;
 }
 
 @media(max-width:768px){
@@ -237,16 +189,17 @@ table input{
         padding:18px;
     }
 
-    .summary{
-        width:100%;
-    }
-
     .invoice-title{
         font-size:24px;
+    }
+
+    .summary{
+        width:100%;
     }
 }
 
 @media print{
+
     .topbar,
     .add-row{
         display:none;
@@ -260,11 +213,8 @@ table input{
     .invoice{
         box-shadow:none;
     }
-
-    .editable{
-        border:none;
-    }
 }
+
 </style>
 </head>
 
@@ -275,6 +225,7 @@ table input{
     <div class="topbar">
 
         <div class="type-box">
+
             <button class="type-btn" onclick="setInvoiceType('PURCHASE INVOICE')">
                 Purchase
             </button>
@@ -282,9 +233,11 @@ table input{
             <button class="type-btn" onclick="setInvoiceType('SALES INVOICE')">
                 Sales
             </button>
+
         </div>
 
-        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <div class="action-box">
+
             <button class="action-btn print-btn" onclick="window.print()">
                 Print Invoice
             </button>
@@ -292,120 +245,32 @@ table input{
             <button class="action-btn save-btn" onclick="saveInvoice()">
                 Save Invoice
             </button>
+
         </div>
 
     </div>
 
     <div class="invoice" id="invoice">
 
-        <div class="header">
-
-            <div class="logo-box">
-                <span id="logoText">Upload Logo</span>
-                <img id="logoPreview" style="display:none;">
-                <input type="file" accept="image/*" onchange="previewLogo(event)">
-            </div>
-
-            <div class="company-details">
-
-                <div class="invoice-title" id="invoiceType">
-                    SALES INVOICE
-                </div>
-
-                <div class="grid">
-
-                    <div>
-                        <label>Company Name</label>
-                        <input class="editable" value="Your Company Name">
-                    </div>
-
-                    <div>
-                        <label>Invoice No</label>
-                        <input class="editable" value="INV-001">
-                    </div>
-
-                    <div>
-                        <label>Invoice Date</label>
-                        <input type="date" class="editable">
-                    </div>
-
-                    <div>
-                        <label>Due Date</label>
-                        <input type="date" class="editable">
-                    </div>
-
-                </div>
-
-                <div class="grid">
-
-                    <div>
-                        <label>Company GSTIN</label>
-                        <input class="editable" value="">
-                    </div>
-
-                    <div>
-                        <label>PAN Number</label>
-                        <input class="editable" value="">
-                    </div>
-
-                    <div>
-                        <label>State</label>
-                        <input class="editable" value="">
-                    </div>
-
-                    <div>
-                        <label>State Code</label>
-                        <input class="editable" value="">
-                    </div>
-
-                </div>
-
-            </div>
-
+        <div class="invoice-title" id="invoiceType">
+            SALES INVOICE
         </div>
 
-        <div class="grid">
+        <div class="input-grid">
 
-            <div class="box">
-
-                <h3>Billed To</h3>
-
-                <label>Customer Name</label>
-                <input class="editable">
-
-                <label>Address</label>
-                <input class="editable">
-
-                <label>Phone</label>
-                <input class="editable">
-
-                <label>Email</label>
-                <input class="editable">
-
-                <label>GSTIN</label>
-                <input class="editable">
-
+            <div class="input-box">
+                <label>Company Name</label>
+                <input type="text" value="Your Company Name">
             </div>
 
-            <div class="box">
+            <div class="input-box">
+                <label>Invoice No</label>
+                <input type="text" value="INV-001">
+            </div>
 
-                <h3>Shipping Details</h3>
-
-                <label>Shipping Address</label>
-                <input class="editable">
-
-                <label>Transport Name</label>
-                <input class="editable">
-
-                <label>Vehicle No</label>
-                <input class="editable">
-
-                <label>E-Way Bill No</label>
-                <input class="editable">
-
-                <label>Payment Method</label>
-                <input class="editable" value="Cash">
-
+            <div class="input-box">
+                <label>Invoice Date</label>
+                <input type="date">
             </div>
 
         </div>
@@ -415,28 +280,26 @@ table input{
             <table id="invoiceTable">
 
                 <thead>
+
                     <tr>
                         <th>#</th>
                         <th>Item Description</th>
-                        <th>HSN/SAC</th>
                         <th>Qty</th>
                         <th>Rate</th>
                         <th>GST %</th>
-                        <th>Amount</th>
+                        <th>Total</th>
                     </tr>
+
                 </thead>
 
                 <tbody>
 
                     <tr>
+
                         <td>1</td>
 
                         <td>
                             <input type="text" placeholder="Item Name">
-                        </td>
-
-                        <td>
-                            <input type="text" placeholder="HSN">
                         </td>
 
                         <td>
@@ -451,7 +314,10 @@ table input{
                             <input type="number" value="18" class="gst" oninput="calculateTotal()">
                         </td>
 
-                        <td class="amount">0.00</td>
+                        <td class="amount">
+                            0.00
+                        </td>
+
                     </tr>
 
                 </tbody>
@@ -474,53 +340,16 @@ table input{
                 </tr>
 
                 <tr>
-                    <td>Total GST</td>
+                    <td>GST Total</td>
                     <td id="gstTotal">0.00</td>
                 </tr>
 
-                <tr class="total">
+                <tr class="total-row">
                     <td>Grand Total</td>
                     <td id="grandTotal">0.00</td>
                 </tr>
 
             </table>
-
-        </div>
-
-        <div class="note">
-
-            <label>Terms & Notes</label>
-
-            <textarea class="editable" style="width:100%; height:120px; border:1px solid #ddd; border-radius:10px; padding:12px;">
-Thank you for your business.
-Goods once sold will not be taken back.
-            </textarea>
-
-        </div>
-
-        <div class="footer">
-
-            <div>
-                <h4>Bank Details</h4>
-
-                <label>Bank Name</label>
-                <input class="editable">
-
-                <label>Account Number</label>
-                <input class="editable">
-
-                <label>IFSC Code</label>
-                <input class="editable">
-
-            </div>
-
-            <div class="signature">
-
-                <div class="signature-line">
-                    Authorized Signature
-                </div>
-
-            </div>
 
         </div>
 
@@ -531,27 +360,9 @@ Goods once sold will not be taken back.
 <script>
 
 function setInvoiceType(type){
+
     document.getElementById("invoiceType").innerText = type;
-}
 
-function previewLogo(event){
-
-    const file = event.target.files[0];
-
-    if(file){
-
-        const reader = new FileReader();
-
-        reader.onload = function(e){
-
-            document.getElementById("logoPreview").src = e.target.result;
-            document.getElementById("logoPreview").style.display = "block";
-            document.getElementById("logoText").style.display = "none";
-
-        }
-
-        reader.readAsDataURL(file);
-    }
 }
 
 function addRow(){
@@ -563,14 +374,11 @@ function addRow(){
     const row = table.insertRow();
 
     row.innerHTML = `
+
         <td>${rowCount}</td>
 
         <td>
             <input type="text" placeholder="Item Name">
-        </td>
-
-        <td>
-            <input type="text" placeholder="HSN">
         </td>
 
         <td>
@@ -585,7 +393,10 @@ function addRow(){
             <input type="number" value="18" class="gst" oninput="calculateTotal()">
         </td>
 
-        <td class="amount">0.00</td>
+        <td class="amount">
+            0.00
+        </td>
+
     `;
 
     calculateTotal();
@@ -608,7 +419,7 @@ function calculateTotal(){
 
         const amount = qty * rate;
 
-        const gstAmount = amount * gst / 100;
+        const gstAmount = (amount * gst) / 100;
 
         const total = amount + gstAmount;
 
@@ -627,6 +438,7 @@ function calculateTotal(){
     document.getElementById("gstTotal").innerText = gstTotal.toFixed(2);
 
     document.getElementById("grandTotal").innerText = grandTotal.toFixed(2);
+
 }
 
 function saveInvoice(){
@@ -636,19 +448,15 @@ function saveInvoice(){
     localStorage.setItem("savedInvoice", invoiceContent);
 
     alert("Invoice Saved Successfully!");
+
 }
 
 window.onload = function(){
 
     calculateTotal();
 
-    const saved = localStorage.getItem("savedInvoice");
-
-    if(saved){
-
-        document.getElementById("invoice").innerHTML = saved;
-    }
 }
+
 </script>
 
 </body>
