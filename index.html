@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>GST Invoice Generator</title>
+<title>Fabric Invoice Generator</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
@@ -158,8 +157,7 @@ td{
   position:relative;
 }
 
-td input,
-td select{
+td input{
   width:100%;
   border:none;
   outline:none;
@@ -175,22 +173,6 @@ td select{
 
 .add-btn{
   margin-top:20px;
-}
-
-.summary{
-  width:400px;
-  margin-left:auto;
-  margin-top:30px;
-}
-
-.summary td{
-  padding:12px;
-}
-
-.total-row{
-  background:#16a34a;
-  color:#fff;
-  font-weight:700;
 }
 
 .status-box{
@@ -329,11 +311,8 @@ td select{
         <tr>
 
           <th>#</th>
-          <th>Particular</th>
+          <th>SKUS' FABRIC</th>
           <th>MTR</th>
-          <th>Rate</th>
-          <th>GST</th>
-          <th>Total</th>
           <th>Action</th>
 
         </tr>
@@ -348,7 +327,7 @@ td select{
 
           <td>
 
-            <input type="text" class="particular" autocomplete="off">
+            <input type="text" class="fabric" autocomplete="off">
 
             <div class="suggestions"></div>
 
@@ -360,38 +339,8 @@ td select{
               type="number"
               step="0.01"
               class="mtr"
-              oninput="calculateTotal()"
             >
 
-          </td>
-
-          <td>
-
-            <input 
-              type="number"
-              step="0.01"
-              class="rate"
-              oninput="calculateTotal()"
-            >
-
-          </td>
-
-          <td>
-
-            <select class="gst" onchange="calculateTotal()">
-
-              <option value="0">No GST</option>
-              <option value="5">GST 5%</option>
-              <option value="12">GST 12%</option>
-              <option value="18">GST 18%</option>
-              <option value="28">GST 28%</option>
-
-            </select>
-
-          </td>
-
-          <td class="amount">
-            0.00
           </td>
 
           <td>
@@ -412,29 +361,6 @@ td select{
       + Add Item
     </button>
 
-    <div class="summary">
-
-      <table>
-
-        <tr>
-          <td>Subtotal</td>
-          <td id="subtotal">0.00</td>
-        </tr>
-
-        <tr>
-          <td>GST Total</td>
-          <td id="gstTotal">0.00</td>
-        </tr>
-
-        <tr class="total-row">
-          <td>Grand Total</td>
-          <td id="grandTotal">0.00</td>
-        </tr>
-
-      </table>
-
-    </div>
-
   </div>
 
   <div class="saved">
@@ -451,7 +377,6 @@ td select{
           <th>Company</th>
           <th>Invoice No</th>
           <th>Date</th>
-          <th>Total</th>
           <th>Action</th>
 
         </tr>
@@ -468,10 +393,10 @@ td select{
 
 <script>
 
-const API_URL = "https://script.google.com/macros/s/AKfycby-WTK46eBc5vdN1P2qP81nVbT7tQC3WFBMMx9GTrCDtUgPLLaD9IXU1r17gQVzA3To/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbzWMJSMlWQiIvW3cLsdkJMaqyrKOWpM44gQQePiCiiy-_9uU1ATkTriklOqWXjPwAjn/exec";
 
 let companies = [];
-let particulars = [];
+let fabrics = [];
 
 async function apiRequest(payload){
 
@@ -525,42 +450,6 @@ function setInvoiceType(type){
 
 }
 
-function calculateTotal(){
-
-  let subtotal = 0;
-
-  let gstTotal = 0;
-
-  document.querySelectorAll("#invoiceTable tbody tr").forEach(row=>{
-
-    const mtr = parseFloat(row.querySelector(".mtr").value) || 0;
-
-    const rate = parseFloat(row.querySelector(".rate").value) || 0;
-
-    const gst = parseFloat(row.querySelector(".gst").value) || 0;
-
-    const amount = mtr * rate;
-
-    const gstAmount = amount * gst / 100;
-
-    const total = amount + gstAmount;
-
-    row.querySelector(".amount").innerText = total.toFixed(2);
-
-    subtotal += amount;
-
-    gstTotal += gstAmount;
-
-  });
-
-  document.getElementById("subtotal").innerText = subtotal.toFixed(2);
-
-  document.getElementById("gstTotal").innerText = gstTotal.toFixed(2);
-
-  document.getElementById("grandTotal").innerText = (subtotal + gstTotal).toFixed(2);
-
-}
-
 function addRow(){
 
   const tbody = document.querySelector("#invoiceTable tbody");
@@ -575,7 +464,7 @@ function addRow(){
 
     <td>
 
-      <input type="text" class="particular" autocomplete="off">
+      <input type="text" class="fabric" autocomplete="off">
 
       <div class="suggestions"></div>
 
@@ -587,38 +476,8 @@ function addRow(){
         type="number"
         step="0.01"
         class="mtr"
-        oninput="calculateTotal()"
       >
 
-    </td>
-
-    <td>
-
-      <input 
-        type="number"
-        step="0.01"
-        class="rate"
-        oninput="calculateTotal()"
-      >
-
-    </td>
-
-    <td>
-
-      <select class="gst" onchange="calculateTotal()">
-
-        <option value="0">No GST</option>
-        <option value="5">GST 5%</option>
-        <option value="12">GST 12%</option>
-        <option value="18">GST 18%</option>
-        <option value="28">GST 28%</option>
-
-      </select>
-
-    </td>
-
-    <td class="amount">
-      0.00
     </td>
 
     <td>
@@ -631,7 +490,7 @@ function addRow(){
 
   `;
 
-  setupParticularSearch(row);
+  setupFabricSearch(row);
 
 }
 
@@ -644,8 +503,6 @@ function removeRow(button){
     button.closest("tr").remove();
 
     updateRowNumbers();
-
-    calculateTotal();
 
   }
 
@@ -675,33 +532,30 @@ async function saveInvoice(){
 
   const items = [];
 
-  let invalidParticular = false;
+  let invalidFabric = false;
 
   document.querySelectorAll("#invoiceTable tbody tr").forEach(row=>{
 
-    const particular = row.querySelector(".particular").value.trim();
+    const fabric = row.querySelector(".fabric").value.trim();
 
-    if(!particulars.includes(particular)){
+    if(!fabrics.includes(fabric)){
 
-      invalidParticular = true;
+      invalidFabric = true;
 
     }
 
     items.push({
 
-      particular : particular,
-      mtr : row.querySelector(".mtr").value,
-      rate : row.querySelector(".rate").value,
-      gst : row.querySelector(".gst").value,
-      total : row.querySelector(".amount").innerText
+      fabric : fabric,
+      mtr : row.querySelector(".mtr").value
 
     });
 
   });
 
-  if(invalidParticular){
+  if(invalidFabric){
 
-    alert("Select valid particular");
+    alert("Select valid fabric");
 
     return;
 
@@ -718,12 +572,6 @@ async function saveInvoice(){
     invoiceNo : document.getElementById("invoiceNo").value,
 
     invoiceDate : document.getElementById("invoiceDate").value,
-
-    subtotal : document.getElementById("subtotal").innerText,
-
-    gstTotal : document.getElementById("gstTotal").innerText,
-
-    grandTotal : document.getElementById("grandTotal").innerText,
 
     items : items
 
@@ -761,8 +609,6 @@ function resetInvoice(){
 
   addRow();
 
-  calculateTotal();
-
   document.getElementById("companyName").focus();
 
 }
@@ -789,7 +635,6 @@ async function loadSavedInvoices(){
         <td>${row[1]}</td>
         <td>${row[2]}</td>
         <td>${formatDate(row[3])}</td>
-        <td>${row[11]}</td>
 
         <td>
 
@@ -862,7 +707,7 @@ async function editInvoice(index){
 
         <input 
           type="text" 
-          class="particular"
+          class="fabric"
           value="${row[4]}"
           autocomplete="off"
         >
@@ -878,53 +723,8 @@ async function editInvoice(index){
           step="0.01"
           class="mtr"
           value="${row[5]}"
-          oninput="calculateTotal()"
         >
 
-      </td>
-
-      <td>
-
-        <input 
-          type="number"
-          step="0.01"
-          class="rate"
-          value="${row[6]}"
-          oninput="calculateTotal()"
-        >
-
-      </td>
-
-      <td>
-
-        <select class="gst" onchange="calculateTotal()">
-
-          <option value="0" ${row[7] == 0 ? "selected" : ""}>
-            No GST
-          </option>
-
-          <option value="5" ${row[7] == 5 ? "selected" : ""}>
-            GST 5%
-          </option>
-
-          <option value="12" ${row[7] == 12 ? "selected" : ""}>
-            GST 12%
-          </option>
-
-          <option value="18" ${row[7] == 18 ? "selected" : ""}>
-            GST 18%
-          </option>
-
-          <option value="28" ${row[7] == 28 ? "selected" : ""}>
-            GST 28%
-          </option>
-
-        </select>
-
-      </td>
-
-      <td class="amount">
-        ${row[8]}
       </td>
 
       <td>
@@ -939,9 +739,7 @@ async function editInvoice(index){
 
   `;
 
-  setupParticularSearch(document.querySelector("#invoiceTable tbody tr"));
-
-  calculateTotal();
+  setupFabricSearch(document.querySelector("#invoiceTable tbody tr"));
 
   window.scrollTo({
 
@@ -1029,9 +827,9 @@ function setupCompanySearch(){
 
 }
 
-function setupParticularSearch(row){
+function setupFabricSearch(row){
 
-  const input = row.querySelector(".particular");
+  const input = row.querySelector(".fabric");
 
   const box = row.querySelector(".suggestions");
 
@@ -1049,7 +847,7 @@ function setupParticularSearch(row){
 
     }
 
-    const filtered = particulars.filter(item=>
+    const filtered = fabrics.filter(item=>
 
       item.toLowerCase().includes(value)
 
@@ -1086,8 +884,6 @@ window.onload = async function(){
 
   document.getElementById("companyName").focus();
 
-  calculateTotal();
-
   checkAPI();
 
   companies = await apiRequest({
@@ -1096,15 +892,15 @@ window.onload = async function(){
 
   });
 
-  particulars = await apiRequest({
+  fabrics = await apiRequest({
 
-    action : "getParticulars"
+    action : "getFabrics"
 
   });
 
   setupCompanySearch();
 
-  setupParticularSearch(document.querySelector("#invoiceTable tbody tr"));
+  setupFabricSearch(document.querySelector("#invoiceTable tbody tr"));
 
   loadSavedInvoices();
 
