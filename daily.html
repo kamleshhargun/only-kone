@@ -256,7 +256,7 @@ button{
 </div>
 
 <script>
-const API_URL = "https://script.google.com/macros/s/AKfycbykAT6MNRqWRXgu1DdNrll2DaNVKz4vCQtx2dLUoS6XEGG6tRpjCGeu38DbCFuXunBo/exec";
+
 let trackingData = {};
 
 function searchTracking(){
@@ -266,7 +266,6 @@ function searchTracking(){
   if(!trackingNo){
 
     alert("Enter tracking number");
-
     return;
 
   }
@@ -275,6 +274,13 @@ function searchTracking(){
 
   google.script.run
   .withSuccessHandler(showResult)
+  .withFailureHandler(function(error){
+
+    document.getElementById("loader").style.display = "none";
+
+    alert(error.message);
+
+  })
   .getTrackingDetails(trackingNo);
 
 }
@@ -286,7 +292,6 @@ function showResult(data){
   if(data.status != "success"){
 
     alert(data.message || "Tracking not found");
-
     return;
 
   }
@@ -295,31 +300,33 @@ function showResult(data){
 
   document.getElementById("result").style.display = "block";
 
-  document.getElementById("tracking").innerText = data.trackingNo;
+  document.getElementById("tracking").innerText = data.trackingNo || "";
 
-  document.getElementById("customer").innerText = data.customerName;
+  document.getElementById("customer").innerText = data.customerName || "";
 
-  document.getElementById("mobile").innerText = data.mobile;
+  document.getElementById("mobile").innerText = data.mobile || "";
 
-  document.getElementById("address").innerText = data.address;
+  document.getElementById("address").innerText = data.address || "";
 
-  document.getElementById("status").innerText = data.currentStatus;
+  document.getElementById("status").innerText = data.currentStatus || "";
 
-  document.getElementById("payment").innerText = data.paymentMode;
+  document.getElementById("payment").innerText = data.paymentMode || "";
 
-  document.getElementById("amount").innerText = data.amount;
+  document.getElementById("amount").innerText = data.amount || "";
 
-  document.getElementById("weight").innerText = data.weight;
+  document.getElementById("weight").innerText = data.weight || "";
 
-  document.getElementById("origin").innerText = data.origin;
+  document.getElementById("origin").innerText = data.origin || "";
 
-  document.getElementById("destination").innerText = data.destination;
+  document.getElementById("destination").innerText = data.destination || "";
 
   let timelineHTML = "";
 
-  data.scans.forEach(scan=>{
+  if(data.scans && data.scans.length){
 
-    timelineHTML += `
+    data.scans.forEach(scan=>{
+
+      timelineHTML += `
 
       <div class="timeline-item">
 
@@ -333,9 +340,15 @@ function showResult(data){
 
       </div>
 
-    `;
+      `;
 
-  });
+    });
+
+  }else{
+
+    timelineHTML = "No timeline available";
+
+  }
 
   document.getElementById("timelineData").innerHTML = timelineHTML;
 
@@ -352,11 +365,9 @@ function saveData(type){
 
       alert(type + " Saved Successfully");
 
-    }
+    }else{
 
-    else{
-
-      alert("Error Saving Data");
+      alert(response.message || "Error Saving Data");
 
     }
 
