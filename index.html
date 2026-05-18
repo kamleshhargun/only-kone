@@ -253,24 +253,24 @@ table input{
     <div class="invoice" id="invoice">
 
         <div class="invoice-title" id="invoiceType">
-            SALES INVOICE
+            PURCHASE INVOICE
         </div>
 
         <div class="input-grid">
 
             <div class="input-box">
                 <label>Company Name</label>
-                <input type="text" value="Your Company Name">
+                <input type="text" id="companyName" autofocus>
             </div>
 
             <div class="input-box">
                 <label>Invoice No</label>
-                <input type="text" value="INV-001">
+                <input type="text">
             </div>
 
             <div class="input-box">
                 <label>Invoice Date</label>
-                <input type="date">
+                <input type="date" id="invoiceDate">
             </div>
 
         </div>
@@ -454,6 +454,14 @@ function saveInvoice(){
 window.onload = function(){
 
     calculateTotal();
+
+    // Auto current date
+    const today = new Date().toISOString().split('T')[0];
+
+    document.getElementById("invoiceDate").value = today;
+
+    // Auto focus on company name
+    document.getElementById("companyName").focus();
 
 }
 
