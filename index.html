@@ -1,634 +1,754 @@
+<!-- index.html -->
+
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <base target="_top">
 
-<title>GST Invoice Generator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-<style>
+  <style>
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Poppins',sans-serif;
-}
-
-body{
-    background:#f3f4f6;
-    padding:20px;
-}
-
-.container{
-    max-width:1250px;
-    margin:auto;
-}
-
-.topbar{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:15px;
-    flex-wrap:wrap;
-    margin-bottom:20px;
-}
-
-.type-box,
-.action-box{
-    display:flex;
-    gap:10px;
-    flex-wrap:wrap;
-}
-
-.btn{
-    border:none;
-    padding:12px 22px;
-    border-radius:12px;
-    cursor:pointer;
-    font-size:14px;
-    font-weight:600;
-    color:#fff;
-}
-
-.dark-btn{
-    background:#111827;
-}
-
-.blue-btn{
-    background:#2563eb;
-}
-
-.green-btn{
-    background:#16a34a;
-}
-
-.invoice{
-    background:#fff;
-    border-radius:20px;
-    padding:30px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.08);
-}
-
-.invoice-title{
-    font-size:32px;
-    font-weight:700;
-    color:#111827;
-    margin-bottom:30px;
-}
-
-.input-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-    gap:18px;
-    margin-bottom:30px;
-}
-
-.input-box{
-    background:#fff;
-    border:2px solid #e5e7eb;
-    border-radius:14px;
-    padding:14px;
-}
-
-.input-box label{
-    display:block;
-    margin-bottom:8px;
-    font-size:13px;
-    font-weight:600;
-    color:#6b7280;
-}
-
-.input-box input{
-    width:100%;
-    border:none;
-    outline:none;
-    font-size:15px;
-    background:transparent;
-}
-
-.table-responsive{
-    overflow:auto;
-}
-
-table{
-    width:100%;
-    border-collapse:collapse;
-}
-
-table th{
-    background:#111827;
-    color:#fff;
-    padding:14px;
-    font-size:14px;
-    text-align:center;
-}
-
-table td{
-    border:1px solid #e5e7eb;
-    padding:10px;
-    text-align:center;
-}
-
-table input{
-    width:100%;
-    border:none;
-    outline:none;
-    text-align:center;
-    font-size:14px;
-}
-
-.gst-box{
-    display:flex;
-    flex-direction:column;
-    gap:6px;
-}
-
-.gst-box label{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:6px;
-    font-size:12px;
-}
-
-.add-row{
-    margin-top:18px;
-}
-
-.summary{
-    width:400px;
-    margin-left:auto;
-    margin-top:30px;
-}
-
-.summary td{
-    padding:12px;
-    font-size:15px;
-}
-
-.total-row{
-    background:#16a34a;
-    color:#fff;
-    font-weight:700;
-}
-
-.saved-section{
-    margin-top:40px;
-}
-
-.saved-title{
-    font-size:24px;
-    font-weight:700;
-    margin-bottom:18px;
-    color:#111827;
-}
-
-.saved-table{
-    background:#fff;
-    border-radius:16px;
-    overflow:hidden;
-    box-shadow:0 5px 20px rgba(0,0,0,0.06);
-}
-
-.saved-table table{
-    width:100%;
-}
-
-.saved-table th{
-    background:#111827;
-    color:#fff;
-}
-
-.saved-table td{
-    background:#fff;
-}
-
-@media(max-width:768px){
-
-    .invoice{
-        padding:18px;
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:'Poppins',sans-serif;
     }
 
-    .invoice-title{
-        font-size:24px;
+    body{
+      background:#f3f4f6;
+      padding:20px;
+    }
+
+    .container{
+      max-width:1250px;
+      margin:auto;
+    }
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-bottom:20px;
+    }
+
+    .btn-group{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    button{
+      border:none;
+      padding:12px 20px;
+      border-radius:12px;
+      cursor:pointer;
+      color:#fff;
+      font-weight:600;
+      font-size:14px;
+    }
+
+    .dark{
+      background:#111827;
+    }
+
+    .green{
+      background:#16a34a;
+    }
+
+    .blue{
+      background:#2563eb;
+    }
+
+    .invoice{
+      background:#fff;
+      padding:30px;
+      border-radius:20px;
+      box-shadow:0 10px 30px rgba(0,0,0,0.08);
+    }
+
+    .title{
+      font-size:32px;
+      font-weight:700;
+      margin-bottom:30px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+      gap:18px;
+      margin-bottom:30px;
+    }
+
+    .box{
+      border:2px solid #e5e7eb;
+      border-radius:14px;
+      padding:14px;
+      position:relative;
+    }
+
+    .box label{
+      display:block;
+      font-size:13px;
+      font-weight:600;
+      color:#6b7280;
+      margin-bottom:8px;
+    }
+
+    .box input{
+      width:100%;
+      border:none;
+      outline:none;
+      font-size:15px;
+    }
+
+    .suggestions{
+      position:absolute;
+      top:100%;
+      left:0;
+      right:0;
+      background:#fff;
+      border:1px solid #ddd;
+      border-radius:10px;
+      max-height:180px;
+      overflow:auto;
+      z-index:999;
+      display:none;
+    }
+
+    .suggestions div{
+      padding:10px;
+      cursor:pointer;
+      border-bottom:1px solid #f1f1f1;
+    }
+
+    .suggestions div:hover{
+      background:#f3f4f6;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+    }
+
+    th{
+      background:#111827;
+      color:#fff;
+      padding:14px;
+      font-size:14px;
+    }
+
+    td{
+      border:1px solid #e5e7eb;
+      padding:10px;
+      text-align:center;
+    }
+
+    td input,
+    td select{
+      width:100%;
+      border:none;
+      outline:none;
+      text-align:center;
+      font-size:14px;
+    }
+
+    .particular-box{
+      position:relative;
+    }
+
+    .particular-suggestions{
+      position:absolute;
+      top:100%;
+      left:0;
+      right:0;
+      background:#fff;
+      border:1px solid #ddd;
+      border-radius:10px;
+      max-height:150px;
+      overflow:auto;
+      z-index:999;
+      display:none;
+    }
+
+    .particular-suggestions div{
+      padding:10px;
+      cursor:pointer;
+      border-bottom:1px solid #f1f1f1;
+      text-align:left;
+    }
+
+    .particular-suggestions div:hover{
+      background:#f3f4f6;
+    }
+
+    .remove-btn{
+      background:#dc2626;
+      padding:8px 12px;
+      font-size:12px;
+      border-radius:8px;
     }
 
     .summary{
-        width:100%;
+      width:400px;
+      margin-left:auto;
+      margin-top:30px;
     }
-}
 
-@media print{
+    .total-row{
+      background:#16a34a;
+      color:#fff;
+      font-weight:700;
+    }
 
-    body{
+    .saved{
+      margin-top:40px;
+    }
+
+    .saved h2{
+      margin-bottom:15px;
+    }
+
+    @media print{
+
+      .topbar,
+      .saved,
+      .remove-btn,
+      .add-btn{
+        display:none !important;
+      }
+
+      body{
         background:#fff;
         padding:0;
-    }
+      }
 
-    .topbar,
-    .saved-section,
-    .add-row{
-        display:none !important;
-    }
-
-    .invoice{
+      .invoice{
         box-shadow:none;
-        border-radius:0;
-        padding:0;
-    }
-}
+      }
 
-</style>
+    }
+
+  </style>
+
 </head>
 
 <body>
 
 <div class="container">
 
-    <div class="topbar">
+  <div class="topbar">
 
-        <div class="type-box">
+    <div class="btn-group">
 
-            <button class="btn dark-btn" onclick="setInvoiceType('PURCHASE INVOICE')">
-                Purchase
-            </button>
+      <button class="dark" onclick="setType('PURCHASE INVOICE')">
+        Purchase
+      </button>
 
-            <button class="btn dark-btn" onclick="setInvoiceType('SALES INVOICE')">
-                Sales
-            </button>
-
-        </div>
-
-        <div class="action-box">
-
-            <button class="btn blue-btn" onclick="printInvoice()">
-                Print Invoice
-            </button>
-
-            <button class="btn green-btn" onclick="saveInvoice()">
-                Save Invoice
-            </button>
-
-        </div>
+      <button class="dark" onclick="setType('SALES INVOICE')">
+        Sales
+      </button>
 
     </div>
 
-    <div class="invoice" id="invoiceArea">
+    <div class="btn-group">
 
-        <div class="invoice-title" id="invoiceType">
-            PURCHASE INVOICE
-        </div>
+      <button class="blue" onclick="window.print()">
+        Print Invoice
+      </button>
 
-        <div class="input-grid">
+      <button class="green" onclick="saveInvoice()">
+        Save Invoice
+      </button>
 
-            <div class="input-box">
-                <label>Company Name</label>
-                <input type="text" id="companyName">
-            </div>
+    </div>
 
-            <div class="input-box">
-                <label>Invoice No</label>
-                <input type="text" id="invoiceNo">
-            </div>
+  </div>
 
-            <div class="input-box">
-                <label>Invoice Date</label>
-                <input type="date" id="invoiceDate">
-            </div>
+  <div class="invoice">
 
-        </div>
+    <div class="title" id="invoiceType">
+      PURCHASE INVOICE
+    </div>
 
-        <div class="table-responsive">
+    <div class="grid">
 
-            <table id="invoiceTable">
+      <div class="box">
 
-                <thead>
+        <label>Company Name</label>
 
-                    <tr>
-                        <th>#</th>
-                        <th>Item Description</th>
-                        <th>Qty</th>
-                        <th>Rate</th>
-                        <th>GST</th>
-                        <th>Total</th>
-                    </tr>
+        <input type="text" id="companyName" autocomplete="off">
 
-                </thead>
+        <div class="suggestions" id="companySuggestions"></div>
 
-                <tbody>
+      </div>
 
-                    <tr>
+      <div class="box">
 
-                        <td>1</td>
+        <label>Invoice No</label>
 
-                        <td>
-                            <input type="text">
-                        </td>
+        <input type="text" id="invoiceNo">
 
-                        <td>
-                            <input type="number" class="qty" oninput="calculateTotal()">
-                        </td>
+      </div>
 
-                        <td>
-                            <input type="number" class="rate" oninput="calculateTotal()">
-                        </td>
+      <div class="box">
 
-                        <td>
+        <label>Invoice Date</label>
 
-                            <div class="gst-box">
+        <input type="date" id="invoiceDate">
 
-                                <label>
-                                    <input type="checkbox" class="sgst" onchange="calculateTotal()">
-                                    SGST 2.5%
-                                </label>
+      </div>
 
-                                <label>
-                                    <input type="checkbox" class="cgst" onchange="calculateTotal()">
-                                    CGST 2.5%
-                                </label>
+    </div>
 
-                                <label>
-                                    <input type="checkbox" class="igst" onchange="calculateTotal()">
-                                    IGST 5%
-                                </label>
+    <table id="invoiceTable">
 
-                            </div>
+      <thead>
 
-                        </td>
+        <tr>
 
-                        <td class="amount">
-                            0.00
-                        </td>
+          <th>#</th>
+          <th>Particular</th>
+          <th>MTR</th>
+          <th>Rate</th>
+          <th>GST</th>
+          <th>Total</th>
+          <th>Action</th>
 
-                    </tr>
+        </tr>
 
-                </tbody>
+      </thead>
 
-            </table>
+      <tbody>
 
-        </div>
+        <tr>
 
-        <div class="add-row">
-            <button class="btn dark-btn" onclick="addRow()">
-                + Add Item
+          <td>1</td>
+
+          <td class="particular-box">
+
+            <input type="text" class="particular-input" autocomplete="off">
+
+            <div class="particular-suggestions"></div>
+
+          </td>
+
+          <td>
+            <input type="number" step="0.01" class="mtr" oninput="calculateTotal()">
+          </td>
+
+          <td>
+            <input type="number" step="0.01" class="rate" oninput="calculateTotal()">
+          </td>
+
+          <td>
+
+            <select class="gst" onchange="calculateTotal()">
+
+              <option value="0">No GST</option>
+              <option value="5">GST 5%</option>
+
+            </select>
+
+          </td>
+
+          <td class="amount">0.00</td>
+
+          <td>
+
+            <button class="remove-btn" onclick="removeRow(this)">
+              Remove
             </button>
-        </div>
 
-        <div class="summary">
+          </td>
 
-            <table>
+        </tr>
 
-                <tr>
-                    <td>Subtotal</td>
-                    <td id="subtotal">0.00</td>
-                </tr>
+      </tbody>
 
-                <tr>
-                    <td>Total GST</td>
-                    <td id="gstTotal">0.00</td>
-                </tr>
+    </table>
 
-                <tr class="total-row">
-                    <td>Grand Total</td>
-                    <td id="grandTotal">0.00</td>
-                </tr>
+    <br>
 
-            </table>
+    <button class="dark add-btn" onclick="addRow()">
+      + Add Item
+    </button>
 
-        </div>
+    <div class="summary">
 
-    </div>
+      <table>
 
-    <div class="saved-section">
+        <tr>
+          <td>Subtotal</td>
+          <td id="subtotal">0.00</td>
+        </tr>
 
-        <div class="saved-title">
-            Saved Invoices
-        </div>
+        <tr>
+          <td>GST Total</td>
+          <td id="gstTotal">0.00</td>
+        </tr>
 
-        <div class="saved-table">
+        <tr class="total-row">
+          <td>Grand Total</td>
+          <td id="grandTotal">0.00</td>
+        </tr>
 
-            <table>
-
-                <thead>
-
-                    <tr>
-                        <th>Invoice Type</th>
-                        <th>Company Name</th>
-                        <th>Invoice No</th>
-                        <th>Date</th>
-                        <th>Grand Total</th>
-                    </tr>
-
-                </thead>
-
-                <tbody id="savedInvoicesBody">
-
-                </tbody>
-
-            </table>
-
-        </div>
+      </table>
 
     </div>
+
+  </div>
+
+  <div class="saved">
+
+    <h2>Saved Invoices</h2>
+
+    <table>
+
+      <thead>
+
+        <tr>
+
+          <th>Invoice Type</th>
+          <th>Company</th>
+          <th>Invoice No</th>
+          <th>Date</th>
+          <th>Total</th>
+
+        </tr>
+
+      </thead>
+
+      <tbody id="savedInvoices"></tbody>
+
+    </table>
+
+  </div>
 
 </div>
 
 <script>
 
-function setInvoiceType(type){
+let companies = [];
+let particulars = [];
 
-    document.getElementById("invoiceType").innerText = type;
+function setType(type){
 
-}
-
-function addRow(){
-
-    const table = document.querySelector("#invoiceTable tbody");
-
-    const rowCount = table.rows.length + 1;
-
-    const row = table.insertRow();
-
-    row.innerHTML = `
-
-        <td>${rowCount}</td>
-
-        <td>
-            <input type="text">
-        </td>
-
-        <td>
-            <input type="number" class="qty" oninput="calculateTotal()">
-        </td>
-
-        <td>
-            <input type="number" class="rate" oninput="calculateTotal()">
-        </td>
-
-        <td>
-
-            <div class="gst-box">
-
-                <label>
-                    <input type="checkbox" class="sgst" onchange="calculateTotal()">
-                    SGST 2.5%
-                </label>
-
-                <label>
-                    <input type="checkbox" class="cgst" onchange="calculateTotal()">
-                    CGST 2.5%
-                </label>
-
-                <label>
-                    <input type="checkbox" class="igst" onchange="calculateTotal()">
-                    IGST 5%
-                </label>
-
-            </div>
-
-        </td>
-
-        <td class="amount">
-            0.00
-        </td>
-
-    `;
+  document.getElementById("invoiceType").innerText = type;
 
 }
 
 function calculateTotal(){
 
-    const rows = document.querySelectorAll("#invoiceTable tbody tr");
+  let subtotal = 0;
+  let gstTotal = 0;
 
-    let subtotal = 0;
-    let gstTotal = 0;
+  document.querySelectorAll("#invoiceTable tbody tr").forEach(row=>{
 
-    rows.forEach(row => {
+    const mtr = parseFloat(row.querySelector(".mtr").value) || 0;
 
-        const qty = parseFloat(row.querySelector(".qty").value) || 0;
+    const rate = parseFloat(row.querySelector(".rate").value) || 0;
 
-        const rate = parseFloat(row.querySelector(".rate").value) || 0;
+    const gst = parseFloat(row.querySelector(".gst").value) || 0;
 
-        const amount = qty * rate;
+    const amount = mtr * rate;
 
-        let gstPercent = 0;
+    const gstAmount = amount * gst / 100;
 
-        if(row.querySelector(".sgst").checked){
-            gstPercent += 2.5;
-        }
+    const finalTotal = amount + gstAmount;
 
-        if(row.querySelector(".cgst").checked){
-            gstPercent += 2.5;
-        }
+    row.querySelector(".amount").innerText = finalTotal.toFixed(2);
 
-        if(row.querySelector(".igst").checked){
-            gstPercent += 5;
-        }
+    subtotal += amount;
+    gstTotal += gstAmount;
 
-        const gstAmount = amount * gstPercent / 100;
+  });
 
-        const finalAmount = amount + gstAmount;
+  document.getElementById("subtotal").innerText = subtotal.toFixed(2);
 
-        row.querySelector(".amount").innerText = finalAmount.toFixed(2);
+  document.getElementById("gstTotal").innerText = gstTotal.toFixed(2);
 
-        subtotal += amount;
+  document.getElementById("grandTotal").innerText = (subtotal + gstTotal).toFixed(2);
 
-        gstTotal += gstAmount;
+}
 
-    });
+function addRow(){
 
-    const grandTotal = subtotal + gstTotal;
+  const tbody = document.querySelector("#invoiceTable tbody");
 
-    document.getElementById("subtotal").innerText = subtotal.toFixed(2);
+  const rowCount = tbody.rows.length + 1;
 
-    document.getElementById("gstTotal").innerText = gstTotal.toFixed(2);
+  const row = tbody.insertRow();
 
-    document.getElementById("grandTotal").innerText = grandTotal.toFixed(2);
+  row.innerHTML = `
+
+    <td>${rowCount}</td>
+
+    <td class="particular-box">
+
+      <input type="text" class="particular-input" autocomplete="off">
+
+      <div class="particular-suggestions"></div>
+
+    </td>
+
+    <td>
+      <input type="number" step="0.01" class="mtr" oninput="calculateTotal()">
+    </td>
+
+    <td>
+      <input type="number" step="0.01" class="rate" oninput="calculateTotal()">
+    </td>
+
+    <td>
+
+      <select class="gst" onchange="calculateTotal()">
+
+        <option value="0">No GST</option>
+        <option value="5">GST 5%</option>
+
+      </select>
+
+    </td>
+
+    <td class="amount">0.00</td>
+
+    <td>
+
+      <button class="remove-btn" onclick="removeRow(this)">
+        Remove
+      </button>
+
+    </td>
+
+  `;
+
+  setupParticularSearch(row.querySelector(".particular-input"));
+
+}
+
+function removeRow(btn){
+
+  const yes = confirm("Are you sure you want to remove this item?");
+
+  if(yes){
+
+    btn.closest("tr").remove();
+
+    updateRowNumbers();
+
+    calculateTotal();
+
+  }
+
+}
+
+function updateRowNumbers(){
+
+  document.querySelectorAll("#invoiceTable tbody tr").forEach((row,index)=>{
+
+    row.cells[0].innerText = index + 1;
+
+  });
 
 }
 
 function saveInvoice(){
 
-    const invoiceType = document.getElementById("invoiceType").innerText;
+  const rows = [];
 
-    const companyName = document.getElementById("companyName").value;
+  document.querySelectorAll("#invoiceTable tbody tr").forEach(row=>{
 
-    const invoiceNo = document.getElementById("invoiceNo").value;
+    rows.push({
 
-    const invoiceDate = document.getElementById("invoiceDate").value;
+      particular: row.querySelector(".particular-input").value,
+      mtr: row.querySelector(".mtr").value,
+      rate: row.querySelector(".rate").value,
+      gst: row.querySelector(".gst").value,
+      total: row.querySelector(".amount").innerText
 
-    const grandTotal = document.getElementById("grandTotal").innerText;
-
-    const invoices = JSON.parse(localStorage.getItem("savedInvoices")) || [];
-
-    invoices.push({
-        invoiceType,
-        companyName,
-        invoiceNo,
-        invoiceDate,
-        grandTotal
     });
 
-    localStorage.setItem("savedInvoices", JSON.stringify(invoices));
+  });
 
-    loadSavedInvoices();
+  const data = {
 
-    alert("Invoice Saved Successfully!");
+    invoiceType: document.getElementById("invoiceType").innerText,
+    companyName: document.getElementById("companyName").value,
+    invoiceNo: document.getElementById("invoiceNo").value,
+    invoiceDate: document.getElementById("invoiceDate").value,
+    subtotal: document.getElementById("subtotal").innerText,
+    gstTotal: document.getElementById("gstTotal").innerText,
+    grandTotal: document.getElementById("grandTotal").innerText,
+    items: rows
+
+  };
+
+  google.script.run.withSuccessHandler(function(){
+
+    alert("Invoice Saved Successfully");
+
+    loadInvoices();
+
+  }).saveInvoice(data);
 
 }
 
-function loadSavedInvoices(){
+function loadInvoices(){
 
-    const invoices = JSON.parse(localStorage.getItem("savedInvoices")) || [];
+  google.script.run.withSuccessHandler(function(data){
 
-    const tbody = document.getElementById("savedInvoicesBody");
+    const tbody = document.getElementById("savedInvoices");
 
     tbody.innerHTML = "";
 
-    invoices.forEach(invoice => {
+    data.forEach(row=>{
 
-        tbody.innerHTML += `
+      tbody.innerHTML += `
 
-            <tr>
+        <tr>
 
-                <td>${invoice.invoiceType}</td>
+          <td>${row[0]}</td>
+          <td>${row[1]}</td>
+          <td>${row[2]}</td>
+          <td>${row[3]}</td>
+          <td>${row[6]}</td>
 
-                <td>${invoice.companyName}</td>
+        </tr>
 
-                <td>${invoice.invoiceNo}</td>
-
-                <td>${invoice.invoiceDate}</td>
-
-                <td>${invoice.grandTotal}</td>
-
-            </tr>
-
-        `;
+      `;
 
     });
 
+  }).getInvoices();
+
 }
 
-function printInvoice(){
+function setupCompanySearch(){
 
-    window.print();
+  const input = document.getElementById("companyName");
+
+  const box = document.getElementById("companySuggestions");
+
+  input.addEventListener("input",function(){
+
+    const value = this.value.toLowerCase();
+
+    box.innerHTML = "";
+
+    if(!value){
+
+      box.style.display = "none";
+
+      return;
+
+    }
+
+    const matched = companies.filter(c=>c.toLowerCase().includes(value));
+
+    matched.forEach(name=>{
+
+      const div = document.createElement("div");
+
+      div.innerText = name;
+
+      div.onclick = function(){
+
+        input.value = name;
+
+        box.style.display = "none";
+
+      }
+
+      box.appendChild(div);
+
+    });
+
+    box.style.display = matched.length ? "block" : "none";
+
+  });
+
+}
+
+function setupParticularSearch(input){
+
+  const box = input.nextElementSibling;
+
+  input.addEventListener("input",function(){
+
+    const value = this.value.toLowerCase();
+
+    box.innerHTML = "";
+
+    if(!value){
+
+      box.style.display = "none";
+
+      return;
+
+    }
+
+    const matched = particulars.filter(p=>p.toLowerCase().includes(value));
+
+    matched.forEach(name=>{
+
+      const div = document.createElement("div");
+
+      div.innerText = name;
+
+      div.onclick = function(){
+
+        input.value = name;
+
+        box.style.display = "none";
+
+      }
+
+      box.appendChild(div);
+
+    });
+
+    box.style.display = matched.length ? "block" : "none";
+
+  });
 
 }
 
 window.onload = function(){
 
-    const today = new Date().toISOString().split('T')[0];
+  document.getElementById("invoiceDate").value =
+  new Date().toISOString().split('T')[0];
 
-    document.getElementById("invoiceDate").value = today;
+  document.getElementById("companyName").focus();
 
-    document.getElementById("companyName").focus();
+  calculateTotal();
 
-    calculateTotal();
+  loadInvoices();
 
-    loadSavedInvoices();
+  google.script.run.withSuccessHandler(function(data){
+
+    companies = data;
+
+    setupCompanySearch();
+
+  }).getCompanies();
+
+  google.script.run.withSuccessHandler(function(data){
+
+    particulars = data;
+
+    document.querySelectorAll(".particular-input").forEach(input=>{
+
+      setupParticularSearch(input);
+
+    });
+
+  }).getParticulars();
 
 }
 
