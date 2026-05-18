@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>GST Invoice</title>
+<title>GST Invoice Generator</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
@@ -24,7 +24,7 @@ body{
 }
 
 .container{
-  max-width:1250px;
+  max-width:1300px;
   margin:auto;
 }
 
@@ -32,8 +32,8 @@ body{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  flex-wrap:wrap;
   gap:10px;
+  flex-wrap:wrap;
   margin-bottom:20px;
 }
 
@@ -92,14 +92,15 @@ button{
   border-radius:14px;
   padding:14px;
   position:relative;
+  background:#fff;
 }
 
 .box label{
   display:block;
   font-size:13px;
   font-weight:600;
-  margin-bottom:8px;
   color:#6b7280;
+  margin-bottom:8px;
 }
 
 .box input{
@@ -107,6 +108,32 @@ button{
   border:none;
   outline:none;
   font-size:15px;
+  background:transparent;
+}
+
+.suggestions{
+  position:absolute;
+  left:0;
+  right:0;
+  top:100%;
+  background:#fff;
+  border:1px solid #ddd;
+  border-radius:10px;
+  overflow:hidden;
+  max-height:180px;
+  overflow-y:auto;
+  display:none;
+  z-index:999;
+}
+
+.suggestions div{
+  padding:10px;
+  cursor:pointer;
+  border-bottom:1px solid #eee;
+}
+
+.suggestions div:hover{
+  background:#f3f4f6;
 }
 
 table{
@@ -133,10 +160,7 @@ td select{
   border:none;
   outline:none;
   text-align:center;
-}
-
-.add-btn{
-  margin-top:20px;
+  font-size:14px;
 }
 
 .remove-btn{
@@ -145,10 +169,18 @@ td select{
   font-size:12px;
 }
 
+.add-btn{
+  margin-top:20px;
+}
+
 .summary{
   width:400px;
   margin-left:auto;
   margin-top:30px;
+}
+
+.summary td{
+  padding:12px;
 }
 
 .total-row{
@@ -171,30 +203,7 @@ td select{
   width:14px;
   height:14px;
   border-radius:50%;
-  background:red;
-}
-
-.suggestions{
-  position:absolute;
-  top:100%;
-  left:0;
-  right:0;
-  background:#fff;
-  border:1px solid #ddd;
-  border-radius:10px;
-  max-height:180px;
-  overflow:auto;
-  display:none;
-  z-index:999;
-}
-
-.suggestions div{
-  padding:10px;
-  cursor:pointer;
-}
-
-.suggestions div:hover{
-  background:#f3f4f6;
+  background:#dc2626;
 }
 
 .saved{
@@ -205,12 +214,28 @@ td select{
   margin-bottom:15px;
 }
 
+@media(max-width:768px){
+
+  .invoice{
+    padding:18px;
+  }
+
+  .title{
+    font-size:24px;
+  }
+
+  .summary{
+    width:100%;
+  }
+
+}
+
 @media print{
 
   .topbar,
   .saved,
-  .add-btn,
-  .remove-btn{
+  .remove-btn,
+  .add-btn{
     display:none !important;
   }
 
@@ -221,6 +246,7 @@ td select{
 
   .invoice{
     box-shadow:none;
+    padding:0;
   }
 
 }
@@ -237,11 +263,11 @@ td select{
 
     <div class="left-top">
 
-      <button class="dark" onclick="setType('PURCHASE INVOICE')">
+      <button class="dark" onclick="setInvoiceType('PURCHASE INVOICE')">
         Purchase
       </button>
 
-      <button class="dark" onclick="setType('SALES INVOICE')">
+      <button class="dark" onclick="setInvoiceType('SALES INVOICE')">
         Sales
       </button>
 
@@ -254,7 +280,7 @@ td select{
         <div class="dot" id="apiDot"></div>
 
         <span id="apiText">
-          API Disconnected
+          Unlive
         </span>
 
       </div>
@@ -271,7 +297,7 @@ td select{
 
   </div>
 
-  <div class="invoice">
+  <div class="invoice" id="invoiceArea">
 
     <div class="title" id="invoiceType">
       PURCHASE INVOICE
@@ -339,13 +365,24 @@ td select{
 
           <td>
 
-            <input type="number" step="0.01" class="mtr" oninput="calculateTotal()">
+            <input 
+              type="number" 
+              step="0.01"
+              placeholder="100.70"
+              class="mtr"
+              oninput="calculateTotal()"
+            >
 
           </td>
 
           <td>
 
-            <input type="number" step="0.01" class="rate" oninput="calculateTotal()">
+            <input 
+              type="number"
+              step="0.01"
+              class="rate"
+              oninput="calculateTotal()"
+            >
 
           </td>
 
@@ -353,8 +390,13 @@ td select{
 
             <select class="gst" onchange="calculateTotal()">
 
-              <option value="0">No GST</option>
-              <option value="5">GST 5%</option>
+              <option value="0">
+                No GST
+              </option>
+
+              <option value="5">
+                GST 5%
+              </option>
 
             </select>
 
@@ -411,30 +453,7 @@ td select{
 
 <script>
 
-const API_URL = "https://script.google.com/macros/s/AKfycbw1lChpNMOOQhlnAgkogB_qVPln2rTMxAsunbRWESUwZI0dCvh9ZjIDrs1jG5-bPBGO/exec";
-
-let companies = [];
-let particulars = [];
-
-
-
-async function apiRequest(data){
-
-  const response = await fetch(API_URL,{
-
-    method:"POST",
-
-    headers:{
-      "Content-Type":"text/plain"
-    },
-
-    body:JSON.stringify(data)
-
-  });
-
-  return await response.json();
-
-}
+const API_URL = "https://script.google.com/macros/s/AKfycbxY40ABhc5tmGDuH0b-Yde0Y7yWcswZHt9J8YkCs5eoXUSnPbyvNs6R1wdoYldLm_SG/exec";
 
 
 
@@ -442,15 +461,20 @@ async function checkAPI(){
 
   try{
 
-    const response = await fetch(API_URL);
+    const response = await fetch(API_URL + "?t=" + Date.now());
 
     const data = await response.json();
 
-    if(data.status == "success"){
+    if(data.status === "success"){
 
-      document.getElementById("apiDot").style.background = "green";
+      document.getElementById("apiDot").style.background = "#16a34a";
 
-      document.getElementById("apiText").innerText = "API Connected";
+      document.getElementById("apiText").innerText = "Live";
+
+    }
+    else{
+
+      throw new Error();
 
     }
 
@@ -458,9 +482,9 @@ async function checkAPI(){
 
   catch(error){
 
-    document.getElementById("apiDot").style.background = "red";
+    document.getElementById("apiDot").style.background = "#dc2626";
 
-    document.getElementById("apiText").innerText = "API Disconnected";
+    document.getElementById("apiText").innerText = "Unlive";
 
   }
 
@@ -468,7 +492,7 @@ async function checkAPI(){
 
 
 
-function setType(type){
+function setInvoiceType(type){
 
   document.getElementById("invoiceType").innerText = type;
 
@@ -531,19 +555,35 @@ function addRow(){
     </td>
 
     <td>
-      <input type="number" step="0.01" class="mtr" oninput="calculateTotal()">
+      <input 
+        type="number"
+        step="0.01"
+        placeholder="100.70"
+        class="mtr"
+        oninput="calculateTotal()"
+      >
     </td>
 
     <td>
-      <input type="number" step="0.01" class="rate" oninput="calculateTotal()">
+      <input 
+        type="number"
+        step="0.01"
+        class="rate"
+        oninput="calculateTotal()"
+      >
     </td>
 
     <td>
 
       <select class="gst" onchange="calculateTotal()">
 
-        <option value="0">No GST</option>
-        <option value="5">GST 5%</option>
+        <option value="0">
+          No GST
+        </option>
+
+        <option value="5">
+          GST 5%
+        </option>
 
       </select>
 
@@ -567,13 +607,13 @@ function addRow(){
 
 
 
-function removeRow(btn){
+function removeRow(button){
 
   const yes = confirm("Are you sure you want to remove this item?");
 
   if(yes){
 
-    btn.closest("tr").remove();
+    button.closest("tr").remove();
 
     updateRowNumbers();
 
@@ -606,9 +646,13 @@ async function saveInvoice(){
     items.push({
 
       particular : row.querySelector(".particular").value,
+
       mtr : row.querySelector(".mtr").value,
+
       rate : row.querySelector(".rate").value,
+
       gst : row.querySelector(".gst").value,
+
       total : row.querySelector(".amount").innerText
 
     });
@@ -641,11 +685,38 @@ async function saveInvoice(){
 
 
 
-  const result = await apiRequest(payload);
+  try{
 
-  if(result.status == "saved"){
+    const response = await fetch(API_URL,{
 
-    alert("Invoice Saved Successfully");
+      method:"POST",
+
+      headers:{
+        "Content-Type":"text/plain"
+      },
+
+      body:JSON.stringify(payload)
+
+    });
+
+    const result = await response.json();
+
+    if(result.status === "saved"){
+
+      alert("Invoice Saved Successfully");
+
+    }
+    else{
+
+      alert("Save Failed");
+
+    }
+
+  }
+
+  catch(error){
+
+    alert("API Error");
 
   }
 
@@ -653,7 +724,7 @@ async function saveInvoice(){
 
 
 
-window.onload = async function(){
+window.onload = function(){
 
   document.getElementById("invoiceDate").value =
   new Date().toISOString().split('T')[0];
